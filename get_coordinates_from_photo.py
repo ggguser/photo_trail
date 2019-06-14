@@ -1,4 +1,6 @@
 import exifread
+from datetime import datetime
+import time
 
 
 def get_exif_data(image_file):
@@ -55,9 +57,23 @@ def get_exif_location(exif_data):
 
 def get_exif_datetime(exif_data):
     photo_datetime = _get_if_exist(exif_data, 'Image DateTime')
-    return photo_datetime
+    return str(photo_datetime)
 
 
 def convert_to_timestamp(date_time: str):
-    data, time = date_time.split(' ')
-    year,
+    date, time = date_time.split(' ')
+    year, month, day = date.split(':')
+    hour, minute, second = time.split(':')
+
+    # dt = datetime.strptime(date_time, '%Y:%m:%d %H:%M:%S')
+    # ts = time.mktime(dt.timetuple())
+    # return ts
+
+    return {
+        'year': year,
+        'month': month,
+        'day': day,
+        'hour': hour,
+        'minute': minute,
+        'second': second
+    }

@@ -62,6 +62,7 @@ def register():
 
 
 @app.route('/upload', methods=['POST'])
+@login_required
 def upload():
     if 'photo' not in request.files:
         redirect(url_for('index'))
@@ -72,7 +73,7 @@ def upload():
     trails.append(photos)
     path = os.path.join(app.config['IMAGE_DIR'], photo_name)  # TODO: это можно переместить в config?
     photo.save(path)  # TODO: загрузка нескольких файлов сразу
-    return redirect(url_for('index'))
+    return redirect(url_for('create'))
 
 
 @app.route('/user/<username>')
@@ -80,10 +81,16 @@ def upload():
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     trails = [
-        {'author': user, 'body': 'Test post #1'},
-        {'author': user, 'body': 'Test post #2'}
+        {'author': user, 'comment': 'Test post #1'},
+        {'author': user, 'comment': 'Test post #2'}
     ]
     return render_template('user.html', user=user, trails=trails)
+
+
+@app.route('/create')
+@login_required
+def create():
+    return render_template('create.html', username=current_user)
 
 
 if __name__ == '__main__':

@@ -7,10 +7,4 @@
         {% endfor %}
     {% endfor %}
 
-    <form action="{{ url_for('upload') }}"
-          method="POST"
-          enctype="multipart/form-data">
-        <input type="file" name="photo" accept="image/jpeg" required>
-        <button>Upload</button>
-    </form>
 {% endblock %}

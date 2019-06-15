@@ -17,10 +17,11 @@
         <div>Photo Trail:
             <a href="{{ url_for('index') }}">Home</a>
             {% if current_user.is_authenticated %}
-            <a href="{{ url_for('logout') }}">Logout</a>
-            <a href="{{ url_for('user', username=current_user.username) }}">Profile</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+                <a href="{{ url_for('user', username=current_user.username) }}">Profile</a>
+                <a href="{{ url_for('create') }}">Create Trail</a>
             {% else %}
-            <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('login') }}">Login</a>
             {% endif %}
         </div>
         <hr>

@@ -45,4 +45,8 @@ def upload():
 
 
 if __name__ == '__main__':
+
+    db.init_app(app)
+    db.create_all()
+
     app.run(port=9874, debug=True)

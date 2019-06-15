@@ -1,20 +1,13 @@
-import os
-import uuid
-
-from flask import Flask, render_template, request, url_for, redirect, flash
-from flask_login import current_user, login_user
-from flask_sqlalchemy import SQLAlchemy
-
+from app import app, db
 from app.forms import LoginForm
 from app.models import User
 
-app = Flask(__name__)
-app.config['IMAGE_DIR'] = os.path.join('static', 'photos')
-app.config['SECRET_KEY'] = 'this_is_secret'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///phototrail.sqlite'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+import os
+import uuid
 
-db = SQLAlchemy(app)  # настроит всё за меня
+from flask import render_template, request, url_for, redirect, flash
+from flask_login import current_user, login_user
+
 photos = []
 
 
@@ -47,7 +40,7 @@ def upload():
     photo = request.files['photo']
     photo_name = str(uuid.uuid4()) + '.jpg'
     photos.append(photo_name)
-    path = os.path.join(app.config['IMAGE_DIR'], photo_name)
+    path = os.path.join(app.config['IMAGE_DIR'], photo_name)  # TODO: это можно переместить в config?
     photo.save(path)
     return redirect(url_for('index'))
 

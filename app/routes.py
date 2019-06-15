@@ -1,7 +1,7 @@
 import os
 import uuid
 
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, flash
 
 from app.forms import LoginForm
 
@@ -17,9 +17,12 @@ def index():
     return render_template('index.html', photos=photos)
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+    if form.validate_on_submit():
+        flash(f'Login requested for user {form.username.data}, remember_me={form.remember_me.data}')
+        return redirect('/index')
     return render_template('login.html', title='Sign In', form=form)
 
 

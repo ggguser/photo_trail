@@ -19,7 +19,7 @@ def upload():
         redirect(url_for('index'))
 
     photo = request.files['photo']
-    photo_name = str(uuid.uuid4())
+    photo_name = str(uuid.uuid4()) + '.jpg'
     photos.append(photo_name)
     path = os.path.join(app.config['IMAGE_DIR'], photo_name)
     photo.save(path)

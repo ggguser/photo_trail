@@ -19,7 +19,7 @@ def _get_if_exist(data, key):
 def _convert_to_degress(value):
     """
     Helper function to convert the GPS coordinates stored in the EXIF to degress in float format
-
+w
     :param value:
     :type value: exifread.utils.Ratio
     :rtype: float

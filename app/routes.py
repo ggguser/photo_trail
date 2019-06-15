@@ -3,8 +3,11 @@ import uuid
 
 from flask import Flask, render_template, request, url_for, redirect
 
+from app.forms import LoginForm
+
 app = Flask(__name__)
 app.config['IMAGE_DIR'] = os.path.join('static', 'photos')
+app.config['SECRET_KEY'] = 'this_is_secret'
 photos = []
 
 
@@ -12,6 +15,12 @@ photos = []
 @app.route('/index')
 def index():
     return render_template('index.html', photos=photos)
+
+
+@app.route('/login')
+def login():
+    form = LoginForm()
+    return render_template('login.html', title='Sign In', form=form)
 
 
 @app.route('/upload', methods=['POST'])

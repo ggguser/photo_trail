@@ -34,12 +34,13 @@ class Trail(db.Model):
     photos = db.relationship('Photo', backref='trail', lazy='dynamic')
 
     def __repr__(self):
-        return f'<Trail {self.photos}>'
+        return f'Trail {self.photos}'
 
 
 class Photo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(140))
+    file = db.Column(db.String(36))
+    comment = db.Column(db.String(140))
     # date = db.Column(db.String(140))  #  TODO: решить, как работать с датой и временем
     lat = db.Column(db.Float)
     lng = db.Column(db.Float)
@@ -48,7 +49,7 @@ class Photo(db.Model):
     trail_id = db.Column(db.Integer, db.ForeignKey('trail.id'))
 
     def __repr__(self):
-        return f'<Photo {self.name}>'
+        return f'Photo {self.name}'
 
 
 @login.user_loader

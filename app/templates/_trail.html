@@ -1,0 +1,12 @@
+    <table>
+        <tr valign="top">
+            <td>{{ trail.author.username }}<br>
+                {{ trail.comment }}<br>
+
+                    {% for photo in photos %}
+                    <img src="{{ url_for('static', filename='photos/' + photo.file) }}" width="200">
+                    {% endfor %}
+
+            </td>
+        </tr>
+    </table>

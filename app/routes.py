@@ -67,7 +67,7 @@ def upload():
         redirect(url_for('index'))
 
     photo = request.files['photo']
-    photo_name = str(uuid.uuid4()) + '.jpg'
+    photo_name = str(uuid.uuid4())
     photos.append(photo_name)
     trails.append(photos)
     path = os.path.join(app.config['IMAGE_DIR'], photo_name)  # TODO: это можно переместить в config?

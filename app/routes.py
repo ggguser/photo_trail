@@ -2,12 +2,16 @@ import os
 import uuid
 
 from flask import Flask, render_template, request, url_for, redirect, flash
+from flask_sqlalchemy import SQLAlchemy
 
 from app.forms import LoginForm
 
 app = Flask(__name__)
 app.config['IMAGE_DIR'] = os.path.join('static', 'photos')
 app.config['SECRET_KEY'] = 'this_is_secret'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///phototrail.sqlite'
+
+db = SQLAlchemy(app)  # настроит всё за меня
 photos = []
 
 
@@ -22,7 +26,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         flash(f'Login requested for user {form.username.data}, remember_me={form.remember_me.data}')
-        return redirect('/index')
+        return redirect(url_for('index'))
     return render_template('login.html', title='Sign In', form=form)
 
 

@@ -33,7 +33,7 @@ class Photo(db.Model):
     # date = db.Column(db.String(140))  #  TODO: решить, как работать с датой и временем
     lat = db.Column(db.Float)
     lng = db.Column(db.Float)
-    timestamp = db.Column(db.DateTime, index=True)
+    timestamp = db.Column(db.DateTime)
     trail_id = db.Column(db.Integer, db.ForeignKey('trail.id'))
 
     def __repr__(self):

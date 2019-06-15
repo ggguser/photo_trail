@@ -8,7 +8,7 @@ import os
 import uuid
 
 from flask import render_template, request, url_for, redirect, flash
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_user, logout_user, login_required
 
 from phototrail import app
 
@@ -73,6 +73,17 @@ def upload():
     path = os.path.join(app.config['IMAGE_DIR'], photo_name)  # TODO: это можно переместить в config?
     photo.save(path)  # TODO: загрузка нескольких файлов сразу
     return redirect(url_for('index'))
+
+
+@app.route('/user/<username>')
+@login_required
+def user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    trails = [
+        {'author': user, 'body': 'Test post #1'},
+        {'author': user, 'body': 'Test post #2'}
+    ]
+    return render_template('user.html', user=user, trails=trails)
 
 
 if __name__ == '__main__':

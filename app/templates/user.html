@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>User: {{ user.username }}</h1>
+    <hr>
+    {% for trail in trails %}
+    <p>
+        {{ trail.author.username }} <br>
+        <b>{{ trail.comment }}</b>
+    </p>
+    {% endfor %}
+{% endblock %}

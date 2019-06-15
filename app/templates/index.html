@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% for photo in photos %}
-        <img src="{{ url_for('static', filename='photos/' + photo) }}" width="200">
+    {% for trail in trails %}
+        {% for photo in photos %}
+            <img src="{{ url_for('static', filename='photos/' + photo) }}" width="200">
+        {% endfor %}
     {% endfor %}
 
     <form action="{{ url_for('upload') }}"

@@ -10,6 +10,7 @@ app = Flask(__name__)
 app.config['IMAGE_DIR'] = os.path.join('static', 'photos')
 app.config['SECRET_KEY'] = 'this_is_secret'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///phototrail.sqlite'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)  # настроит всё за меня
 photos = []

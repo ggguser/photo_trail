@@ -3,7 +3,6 @@ from app.models import User, Trail, Photo
 
 app = create_app()
 
-# app.run(port=9874, debug=True)
 
 # db.init_app(app)
 # db.create_all()

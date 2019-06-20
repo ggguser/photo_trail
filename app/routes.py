@@ -1,7 +1,8 @@
 from werkzeug.urls import url_parse
+from werkzeug.utils import secure_filename
 
 from app import db
-from app.forms import LoginForm, RegistrationForm
+from app.forms import LoginForm, RegistrationForm, UploadForm
 from app.models import User
 
 import os
@@ -61,19 +62,33 @@ def register():
     return render_template('register.html', title='Registration', form=form)
 
 
-@app.route('/upload', methods=['POST'])
-@login_required
-def upload():
-    if 'photo' not in request.files:
-        redirect(url_for('index'))
+# @app.route('/upload', methods=['POST'])
+# @login_required
+# def upload():
+#     if 'photo' not in request.files:
+#         redirect(url_for('index'))
+#
+#     photo = request.files['photo']
+#     photo_name = str(uuid.uuid4())
+#     photos.append(photo_name)
+#     trails.append(photos)
+#     path = os.path.join(app.config['IMAGE_DIR'], photo_name)  # TODO: это можно переместить в config?
+#     photo.save(path)  # TODO: загрузка нескольких файлов сразу
+#     return redirect(url_for('create'))
 
-    photo = request.files['photo']
-    photo_name = str(uuid.uuid4())
-    photos.append(photo_name)
-    trails.append(photos)
-    path = os.path.join(app.config['IMAGE_DIR'], photo_name)  # TODO: это можно переместить в config?
-    photo.save(path)  # TODO: загрузка нескольких файлов сразу
-    return redirect(url_for('create'))
+
+@app.route('/create', methods=['GET', 'POST'])
+@login_required
+def create():
+    form = UploadForm()
+
+    if form.validate_on_submit():
+        filename = secure_filename(form.file.data.filename)
+        path = os.path.join(app.config['IMAGE_DIR'], filename)
+        form.file.data.save(path)
+        return redirect(url_for('create'))
+
+    return render_template('create.html', form=form)
 
 
 @app.route('/user/<username>')
@@ -81,16 +96,17 @@ def upload():
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     trails = [
-        {'author': user, 'comment': 'Test post #1'},
-        {'author': user, 'comment': 'Test post #2'}
+        {'author': user, 'comment': 'Test trail #1'},
+        {'author': user, 'comment': 'Test trail #2'}
     ]
     return render_template('user.html', user=user, trails=trails)
 
 
-@app.route('/create')
-@login_required
-def create():
-    return render_template('create.html', username=current_user)
+# @app.route('/create')
+# @login_required
+# def create():
+#     form = UploadForm()
+#     return render_template('create.html', username=current_user, form=form)
 
 
 if __name__ == '__main__':

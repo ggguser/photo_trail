@@ -1,14 +1,30 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+{% for photo in photos %}
+<img src="{{ url_for('static', filename='photos/' + photo.file) }}" width="200">
+{% endfor %}
+
+{#{% if current_user.is_authenticated %}#}
+{#    <form action="{{ url_for('upload') }}"#}
+{#          method="POST"#}
+{#          enctype="multipart/form-data">#}
+{#        <input type="file" name="photo" accept="image/jpeg" required>#}
+{#        <button>Upload</button>#}
+{#    </form>#}
+{#{% else %}#}
+{#    <a href="{{ url_for('login') }}">Please Login!</a>#}
+{#{% endif %}#}
+
+
 {% if current_user.is_authenticated %}
-    <form action="{{ url_for('upload') }}"
-          method="POST"
-          enctype="multipart/form-data">
-        <input type="file" name="photo" accept="image/jpeg" required>
-        <button>Upload</button>
+    <form method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        {{ form.file }}
+        <input type="submit">
     </form>
 {% else %}
-    <a href="{{ url_for('login') }}">Please Login!</a>
+<a href="{{ url_for('login') }}">Please Login!</a>
 {% endif %}
 {% endblock %}

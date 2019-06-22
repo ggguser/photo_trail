@@ -81,7 +81,7 @@ def register():
 @app.route('/create', methods=['GET', 'POST'])
 @login_required
 def create():
-    form = PhotoForm()
+    form = PhotoForm(multiple=True)
 
     if form.validate_on_submit():
 

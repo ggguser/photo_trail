@@ -11,16 +11,16 @@
     <form method="post" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         {{ form.photo }}
-        <input type="submit" accept="image/jpeg" required>
+        <input type="submit">
     </form>
 
 
 
      {% for error in form.photo.errors %}
-            <span style="color: red;">[{{ error }}]</span>
+            <span style="color: red;">{{ error }}</span>
      {% endfor %}
 
 {% else %}
-<a href="{{ url_for('login') }}">Please Login!</a>
+<a href="{{ url_for('login') }}">Залогиньтесь, пожалуйста!</a>
 {% endif %}
 {% endblock %}

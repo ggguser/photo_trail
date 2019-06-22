@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+    {{ date_time, lat, lng }}
 {% for photo in photos %}
 <img src="{{ url_for('static', filename='photos/' + photo.file) }}" width="200">
 {% endfor %}

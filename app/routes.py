@@ -3,6 +3,7 @@ from werkzeug.utils import secure_filename
 
 from app import db
 from app.forms import LoginForm, RegistrationForm, UploadForm
+from app.get_coordinates import get_exif_data, get_exif_date_location
 from app.models import User
 
 import os
@@ -86,7 +87,9 @@ def create():
         photo_name = secure_filename(str(uuid.uuid4()) + '.jpg')
         path = os.path.join(app.config['IMAGE_DIR'], photo_name)
         form.file.data.save(path)
-        return redirect(url_for('create'))
+        exif_data = get_exif_data(path)
+        date_time, lat, lng = get_exif_date_location(exif_data)
+        return render_template('create.html', date_time=date_time, lat=lat, lng=lng, form=form)
 
     return render_template('create.html', form=form)
 

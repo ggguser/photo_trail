@@ -18,8 +18,7 @@ def _get_if_exist(data, key):
 
 def _convert_to_degress(value):
     """
-    Helper function to convert the GPS coordinates stored in the EXIF to degress in float format
-w
+    Helper function to convert the GPS coordinates stored in the EXIF to degrees in float format
     :param value:
     :type value: exifread.utils.Ratio
     :rtype: float
@@ -31,17 +30,20 @@ w
     return d + (m / 60.0) + (s / 3600.0)
 
 
-def get_exif_location(exif_data):
+def get_exif_date_location(exif_data):
     """
     Returns the latitude and longitude, if available, from the provided exif_data (obtained through get_exif_data above)
     """
     lat = None
     lon = None
+    datetime = None
 
     gps_latitude = _get_if_exist(exif_data, 'GPS GPSLatitude')
     gps_latitude_ref = _get_if_exist(exif_data, 'GPS GPSLatitudeRef')
     gps_longitude = _get_if_exist(exif_data, 'GPS GPSLongitude')
     gps_longitude_ref = _get_if_exist(exif_data, 'GPS GPSLongitudeRef')
+
+    datetime = _get_if_exist(exif_data, 'Image DateTime')
 
     if gps_latitude and gps_latitude_ref and gps_longitude and gps_longitude_ref:
         lat = _convert_to_degress(gps_latitude)
@@ -52,7 +54,7 @@ def get_exif_location(exif_data):
         if gps_longitude_ref.values[0] != 'E':
             lon = 0 - lon
 
-    return round(lat, 6), round(lon, 6)
+    return datetime, round(lat, 6), round(lon, 6)
 
 
 def get_exif_datetime(exif_data):

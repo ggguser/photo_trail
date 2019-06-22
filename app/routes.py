@@ -83,8 +83,8 @@ def create():
     form = UploadForm()
 
     if form.validate_on_submit():
-        filename = secure_filename(form.file.data.filename)
-        path = os.path.join(app.config['IMAGE_DIR'], filename)
+        photo_name = secure_filename(str(uuid.uuid4()) + '.jpg')
+        path = os.path.join(app.config['IMAGE_DIR'], photo_name)
         form.file.data.save(path)
         return redirect(url_for('create'))
 

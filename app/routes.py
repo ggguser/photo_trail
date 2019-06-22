@@ -2,7 +2,7 @@ from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
 
 from app import db
-from app.forms import LoginForm, RegistrationForm, UploadForm
+from app.forms import LoginForm, RegistrationForm, PhotoForm
 from app.get_coordinates import get_exif_data, get_exif_date_location
 from app.models import User
 
@@ -81,12 +81,13 @@ def register():
 @app.route('/create', methods=['GET', 'POST'])
 @login_required
 def create():
-    form = UploadForm()
+    form = PhotoForm()
 
     if form.validate_on_submit():
+
         photo_name = secure_filename(str(uuid.uuid4()) + '.jpg')
         path = os.path.join(app.config['IMAGE_DIR'], photo_name)
-        form.file.data.save(path)
+        form.photo.data.save(path)
         exif_data = get_exif_data(path)
         date_time, lat, lng = get_exif_date_location(exif_data)
         return render_template('create.html', date_time=date_time, lat=lat, lng=lng, form=form)

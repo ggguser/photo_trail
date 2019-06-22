@@ -1,4 +1,5 @@
-from flask_wtf import FlaskForm, Form
+from flask_wtf import FlaskForm
+from flask_wtf.file import FileRequired, FileAllowed
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, FileField
 from wtforms.validators import DataRequired, EqualTo, Email, ValidationError, Length
 
@@ -30,5 +31,5 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Please use a different email address.')
 
 
-class UploadForm(Form):
-    file = FileField()
+class PhotoForm(FlaskForm):
+    photo = FileField(validators=[FileRequired(), FileAllowed(['jpg'], 'Images only!')])

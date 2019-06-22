@@ -7,6 +7,7 @@ from datetime import datetime
 
 
 class User(UserMixin, db.Model):
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
@@ -27,6 +28,7 @@ class User(UserMixin, db.Model):
 
 
 class Trail(db.Model):
+    __tablename__ = 'trails'
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
@@ -38,6 +40,7 @@ class Trail(db.Model):
 
 
 class Photo(db.Model):
+    __tablename__ = 'photos'
     id = db.Column(db.Integer, primary_key=True)
     file = db.Column(db.String(36))
     comment = db.Column(db.String(140))

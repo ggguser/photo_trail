@@ -60,6 +60,20 @@ def get_exif_date_location(exif_data):
     return datetime, lat, lon
 
 
+def get_exif_orientation(exif_data):
+    orientation = _get_if_exist(exif_data, 'Image Orientation')
+
+    if orientation.values[0] == 1:
+        return 'rotate_0'
+    elif orientation.values[0] == 3:
+        return 'rotate_180'
+    elif orientation.values[0] == 6:
+        return 'rotate_270'
+    elif orientation.values[0] == 8:
+        return 'rotate_90'
+    return 'rotate_0'
+
+
 def get_exif_datetime(exif_data):
     photo_datetime = _get_if_exist(exif_data, 'Image DateTime')
     return str(photo_datetime)

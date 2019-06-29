@@ -16,7 +16,7 @@ def _get_if_exist(data, key):
     return None
 
 
-def _convert_to_degress(value):
+def _convert_to_degrees(value):
     """
     Helper function to convert the GPS coordinates stored in the EXIF to degrees in float format
     :param value:
@@ -46,15 +46,18 @@ def get_exif_date_location(exif_data):
     datetime = _get_if_exist(exif_data, 'Image DateTime')
 
     if gps_latitude and gps_latitude_ref and gps_longitude and gps_longitude_ref:
-        lat = _convert_to_degress(gps_latitude)
+        lat = _convert_to_degrees(gps_latitude)
         if gps_latitude_ref.values[0] != 'N':
             lat = 0 - lat
 
-        lon = _convert_to_degress(gps_longitude)
+        lon = _convert_to_degrees(gps_longitude)
         if gps_longitude_ref.values[0] != 'E':
             lon = 0 - lon
 
-    return datetime, round(lat, 6), round(lon, 6)
+        lat = round(lat, 6)
+        lon = round(lon, 6)
+
+    return datetime, lat, lon
 
 
 def get_exif_datetime(exif_data):

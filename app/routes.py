@@ -1,7 +1,7 @@
 from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
 
-from app import db
+from app import app, db
 from app.forms import LoginForm, RegistrationForm, PhotoForm
 from app.get_coordinates import get_exif_data, get_exif_date_location
 from app.models import User
@@ -12,16 +12,13 @@ import uuid
 from flask import render_template, request, url_for, redirect, flash
 from flask_login import current_user, login_user, logout_user, login_required
 
-from phototrail import app
-
-photos = []
-trails = [photos]
+# from phototrail import app
 
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html', title='Главная', trails=trails)
+    return render_template('index.html', title='Главная')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -32,7 +29,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
+            flash('Не подходит пароль или логин, а может и оба')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
@@ -58,7 +55,7 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('Congratulations, you are now a registered user!')
+        flash('Поздравляем с регистрацией!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Registration', form=form)
 
@@ -82,15 +79,16 @@ def register():
 @login_required
 def create():
     form = PhotoForm(multiple=True)
-
+    photos = []
     if form.validate_on_submit():
 
         photo_name = secure_filename(str(uuid.uuid4()) + '.jpg')
+        photos.append(photo_name)
         path = os.path.join(app.config['IMAGE_DIR'], photo_name)
         form.photo.data.save(path)
         exif_data = get_exif_data(path)
         date_time, lat, lng = get_exif_date_location(exif_data)
-        return render_template('create.html', date_time=date_time, lat=lat, lng=lng, form=form)
+        return render_template('create.html', date_time=date_time, lat=lat, lng=lng, form=form, photos=photos)
 
     return render_template('create.html', form=form)
 
@@ -113,8 +111,5 @@ def user(username):
 #     return render_template('create.html', username=current_user, form=form)
 
 
-if __name__ == '__main__':
-    # db.init_app(app)
-    # db.create_all()
-
-    app.run(port=9874, debug=True)
+# if __name__ == '__main__':
+#     app.run(port=9873, debug=True)

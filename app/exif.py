@@ -61,16 +61,26 @@ def get_exif_date_location(exif_data):
 
 
 def get_exif_orientation(exif_data):
+    """
+        1: 'Horizontal (normal)',
+        2: 'Mirrored horizontal',
+        3: 'Rotated 180',
+        4: 'Mirrored vertical',
+        5: 'Mirrored horizontal then rotated 90 CCW',
+        6: 'Rotated 90 CW',
+        7: 'Mirrored horizontal then rotated 90 CW',
+        8: 'Rotated 90 CCW'
+    """
     orientation = _get_if_exist(exif_data, 'Image Orientation')
 
-    if orientation.values[0] == 1:
+    if 1 in orientation.values:
         return 'rotate_0'
-    elif orientation.values[0] == 3:
+    elif 3 in orientation.values:
         return 'rotate_180'
-    elif orientation.values[0] == 6:
-        return 'rotate_270'
-    elif orientation.values[0] == 8:
+    elif 6 in orientation.values:
         return 'rotate_90'
+    elif 8 in orientation.values:
+        return 'rotate_270'
     return 'rotate_0'
 
 

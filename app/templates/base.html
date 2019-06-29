@@ -9,6 +9,7 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/style.css">
 
+
     {% if title %}
       <title>{{ title }} - Photo Trail</title>
       {% else %}
@@ -20,10 +21,7 @@
 
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
       <a class="navbar-brand" href="{{ url_for('index') }}">Photo Trail</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-                aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-{#            <span class="navbar-toggler-icon"></span>#}
-        </button>
+
 
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
@@ -35,7 +33,7 @@
               <a class="nav-link" href="{{ url_for('create') }}">Загрузить фото</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" ref="{{ url_for('logout') }}">Выйти</a>
+              <a class="nav-link" href="{{ url_for('logout') }}">Выйти</a>
             </li>
           {% else %}
              <a href="{{ url_for('login') }}">Войти</a>
@@ -66,8 +64,13 @@
     {% endif %}
     {% endwith %}
 
+    <div>
+    <span>
+        <br>
+        <br>
+    </span>
     {% block content %}{% endblock %}
-
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

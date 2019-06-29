@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {{ date_time, lat, lng }}
+
 {% for photo in photos %}
-<img src="{{ url_for('static', filename='photos/' + photo) }}" width="200">
+    <img src="{{ url_for('static', filename='photos/' + photo) }}"
+         width="200"
+         class={{ rotation }}><br>
+    {{ rotation, date_time, lat, lng }}<br>
 {% endfor %}
 
 
@@ -21,6 +24,6 @@
      {% endfor %}
 
 {% else %}
-<a href="{{ url_for('login') }}">Залогиньтесь, пожалуйста!</a>
+<a href="{{ url_for('login') }}">Залогиньтесь</a>, пожалуйста!
 {% endif %}
 {% endblock %}

@@ -2,17 +2,20 @@ from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
 
 from app import app, db
+from app.exif import get_exif_orientation
 from app.forms import LoginForm, RegistrationForm, PhotoForm
-from app.get_coordinates import get_exif_data, get_exif_date_location
+from app.exif import get_exif_data, get_exif_date_location
 from app.models import User
 
 import os
-import uuid
+from uuid import uuid4
 
 from flask import render_template, request, url_for, redirect, flash
 from flask_login import current_user, login_user, logout_user, login_required
 
 # from phototrail import app
+
+photos = []
 
 
 @app.route('/')
@@ -63,6 +66,10 @@ def register():
 # @app.route('/upload', methods=['POST'])
 # @login_required
 # def upload():
+#     photos = []
+
+
+
 #     if 'photo' not in request.files:
 #         redirect(url_for('index'))
 #
@@ -79,16 +86,16 @@ def register():
 @login_required
 def create():
     form = PhotoForm(multiple=True)
-    photos = []
     if form.validate_on_submit():
 
-        photo_name = secure_filename(str(uuid.uuid4()) + '.jpg')
+        photo_name = secure_filename(str(uuid4()) + '.jpg')
         photos.append(photo_name)
         path = os.path.join(app.config['IMAGE_DIR'], photo_name)
         form.photo.data.save(path)
         exif_data = get_exif_data(path)
         date_time, lat, lng = get_exif_date_location(exif_data)
-        return render_template('create.html', date_time=date_time, lat=lat, lng=lng, form=form, photos=photos)
+        rotation = get_exif_orientation(exif_data)
+        return render_template('create.html', date_time=date_time, lat=lat, lng=lng, form=form, photos=photos, rotation=rotation)
 
     return render_template('create.html', form=form)
 

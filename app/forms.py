@@ -23,14 +23,14 @@ class RegistrationForm(FlaskForm):
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
-            raise ValidationError('Please use a different username.')
+            raise ValidationError('Это имя уже кем-то занято, попробуйте другое')
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
-            raise ValidationError('Please use a different email address.')
+            raise ValidationError('На этот адрес уже зарегистрировался кто-то другой')
 
 
 class PhotoForm(FlaskForm):
-    photo = FileField(validators=[FileRequired(), FileAllowed(['jpg', 'jpeg'],
-                                                              'Подойдут только файлы jpeg (они же jpg)')])
+    photo = FileField(validators=[FileRequired(),
+                                  FileAllowed(['jpg', 'jpeg'], 'Подойдут только jpeg файлы')])

@@ -1,10 +1,10 @@
+from PIL import Image
 from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
 
 from app import app, db
-from app.exif import get_exif_orientation
 from app.forms import LoginForm, RegistrationForm, PhotoForm
-from app.exif import get_exif_data, get_exif_date_location
+from app.exif import get_exif_data, get_exif_date_location, create_thumbnail
 from app.models import User
 
 import os
@@ -12,6 +12,8 @@ from uuid import uuid4
 
 from flask import render_template, request, url_for, redirect, flash
 from flask_login import current_user, login_user, logout_user, login_required
+
+from app.exif import get_exif_orientation
 
 # from phototrail import app
 
@@ -85,16 +87,20 @@ def register():
 @app.route('/create', methods=['GET', 'POST'])
 @login_required
 def create():
-    form = PhotoForm(multiple=True)
+    form = PhotoForm()
     if form.validate_on_submit():
-
-        photo_name = secure_filename(str(uuid4()) + '.jpg')
-        photos.append(photo_name)
-        path = os.path.join(app.config['IMAGE_DIR'], photo_name)
-        form.photo.data.save(path)
-        exif_data = get_exif_data(path)
+        size = (400, 400)
+        photo_uuid = str(uuid4())
+        photo_name = secure_filename(photo_uuid + '.jpg')
+        thumbnail_name = secure_filename(photo_uuid + '_thumbnail.jpg')
+        photos.append(thumbnail_name)
+        photo_path = os.path.join(app.config['IMAGE_DIR'], photo_name)
+        thumbnail_path = os.path.join(app.config['IMAGE_DIR'], thumbnail_name)
+        form.photo.data.save(photo_path)
+        exif_data = get_exif_data(photo_path)
         date_time, lat, lng = get_exif_date_location(exif_data)
         rotation = get_exif_orientation(exif_data)
+        create_thumbnail(photo_path, thumbnail_path, size, rotation)
         return render_template('create.html', date_time=date_time, lat=lat, lng=lng, form=form, photos=photos, rotation=rotation)
 
     return render_template('create.html', form=form)

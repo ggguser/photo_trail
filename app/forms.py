@@ -1,4 +1,4 @@
-from flask_wtf import FlaskForm
+from flask_wtf import FlaskForm, widgets
 from flask_wtf.file import FileRequired, FileAllowed
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, FileField, MultipleFileField
 from wtforms.validators import DataRequired, EqualTo, Email, ValidationError, Length
@@ -32,5 +32,8 @@ class RegistrationForm(FlaskForm):
 
 
 class PhotoForm(FlaskForm):
+    private = BooleanField('Спрятать эти фотографии')
+    submit = SubmitField('Загрузить')
     photo = FileField(validators=[FileRequired(),
                                   FileAllowed(['jpg', 'jpeg'], 'Подойдут только jpeg файлы')])
+

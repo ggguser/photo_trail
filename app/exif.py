@@ -1,6 +1,8 @@
 import exifread
 from datetime import datetime
 import time
+from PIL import Image
+import os
 
 
 def get_exif_data(image_file):
@@ -73,15 +75,24 @@ def get_exif_orientation(exif_data):
     """
     orientation = _get_if_exist(exif_data, 'Image Orientation')
 
-    if 1 in orientation.values:
-        return 'rotate_0'
-    elif 3 in orientation.values:
-        return 'rotate_180'
-    elif 6 in orientation.values:
-        return 'rotate_90'
-    elif 8 in orientation.values:
-        return 'rotate_270'
-    return 'rotate_0'
+    return orientation
+
+
+def create_thumbnail(photo, thumbnail, size, orientation):
+    with open(photo, 'rb') as photo_file:
+        im = Image.open(photo_file)
+
+        if 1 in orientation.values:
+            pass
+        elif 3 in orientation.values:
+            im = im.rotate(180, expand=True)
+        elif 6 in orientation.values:
+            im = im.rotate(270, expand=True)
+        elif 8 in orientation.values:
+            im = im.transpose(Image.ROTATE_90)
+
+        im.thumbnail(size, Image.ANTIALIAS)
+        im.save(thumbnail, "JPEG", quality=100)
 
 
 def get_exif_datetime(exif_data):
@@ -106,3 +117,18 @@ def convert_to_timestamp(date_time: str):
         'minute': minute,
         'second': second
     }
+
+
+# def create_thumbnail(photo):
+#     size = (200, 200)
+#
+#     outfile = os.path.splitext(infile)[0] + ".thumbnail"
+#     if infile != outfile:
+#         try:
+#             im = Image.open(infile)
+#             im.thumbnail(size)
+#             im.save(outfile, "JPEG")
+#         except IOError:
+#             print("cannot create thumbnail for", infile)
+
+

@@ -43,7 +43,11 @@ class Trail(db.Model):
 class Photo(db.Model):
     # __tablename__ = 'photos'
     id = db.Column(db.Integer, primary_key=True)
-    file = db.Column(db.String(36))
+
+    filename = db.Column(db.String(40))
+    original_filename = db.Column(db.String(50))
+    thumbnail = db.Column(db.String(50))
+    orientation = db.Column(db.Integer)
     comment = db.Column(db.String(140))
     # date = db.Column(db.String(140))  #  TODO: решить, как работать с датой и временем
     lat = db.Column(db.Float)
@@ -53,7 +57,7 @@ class Photo(db.Model):
     trail_id = db.Column(db.Integer, db.ForeignKey('trail.id'))
 
     def __repr__(self):
-        return f'Photo {self.name}'
+        return f'Photo {self.file}'
 
 
 @login.user_loader

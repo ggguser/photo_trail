@@ -2,7 +2,7 @@
 
 {% block content %}
 
-      <div class="album py-2 bg-light">
+      <div class="album py-1 bg-light">
     <div class="container">
 
       <div class="row">
@@ -22,6 +22,14 @@
 
     {% if current_user.is_authenticated %}
         <div align="center">
+
+            {% for error in form.photo.errors %}
+
+                <div class="alert alert-warning" align="center">
+                    {{ error }}
+                </div>
+            {% endfor %}
+
             <form method="post" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             <div>{{ form.photo }} {{ form.submit }}</div>
@@ -30,10 +38,6 @@
         </form>
         </div>
 
-
-        {% for error in form.photo.errors %}
-            <span style="color: red;">{{ error }}</span>
-        {% endfor %}
 
     {% else %}
         <a href="{{ url_for('login') }}">Залогиньтесь</a>, пожалуйста!

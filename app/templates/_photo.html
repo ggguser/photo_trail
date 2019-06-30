@@ -10,17 +10,19 @@
 <div class="col-md-3">
     <div class="card mb-2 shadow-sm align-items-center">
 
- <img src="{{ url_for('static', filename='photos/' + photo.filename) }}"
+ <img src="{{ url_for('static', filename='photos/' + photo.thumbnail) }}"
                 class="img-thumbnail"  alt="..."
                 width="200">
         <div class="card-body">
-            <p class="card-text">{{ photo.original_filename, date_time, lat, lng }}</p>
+            <p class="card-text">{{ photo.datetime, photo.lat, photo.lng }}</p>
             <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                     <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
                     <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+
                 </div>
-                <small class="text-muted">9 mins</small>
+                <div align="left"><small class="text-muted">{{ photo.original_filename[:20] }}</small></div>
+
             </div>
         </div>
     </div>

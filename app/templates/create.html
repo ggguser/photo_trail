@@ -2,41 +2,39 @@
 
 {% block content %}
 
-      <div class="album py-1 bg-light">
-    <div class="container">
+    <div class="album py-1 bg-light">
+        <div class="container">
+            <div class="row">
 
-      <div class="row">
+                {% for photo in photos %}
 
-    {% for photo in photos %}
-        {% include '_photo.html' %}
-{#        <img src="{{ url_for('static', filename='photos/' + photo) }}"#}
-{#             width="200"#}
-{#             class={{ rotation }}><br>#}
-{#        {{ rotation, date_time, lat, lng }}<br>#}
-    {% endfor %}
+                    {% include '_photo.html' %}
 
+                {% endfor %}
+
+            </div>
         </div>
     </div>
-</div>
 
 
     {% if current_user.is_authenticated %}
-        <div align="center">
+        <form method="post" enctype="multipart/form-data">
 
-            {% for error in form.photo.errors %}
+            <div class="form-group col-md-5">
 
-                <div class="alert alert-warning" align="center">
-                    {{ error }}
-                </div>
-            {% endfor %}
+                {% for error in form.photo.errors %}
+                    <div class="alert alert-warning">
+                        {{ error }}
+                    </div>
+                {% endfor %}
 
-            <form method="post" enctype="multipart/form-data">
-            {{ form.hidden_tag() }}
-            <div>{{ form.photo }} {{ form.submit }}</div>
-            <div>{{ form.private() }} {{ form.private.label }}</div>
 
+                {{ form.hidden_tag() }}
+                <div>{{ form.photo }} {{ form.submit }}</div>
+                <div>{{ form.private() }} {{ form.private.label }}</div>
+            </div>
         </form>
-        </div>
+
 
 
     {% else %}

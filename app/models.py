@@ -43,13 +43,13 @@ class Trail(db.Model):
 class Photo(db.Model):
     # __tablename__ = 'photos'
     id = db.Column(db.Integer, primary_key=True)
-
+    uuid = db.Column(db.String(36))
     filename = db.Column(db.String(40))
     original_filename = db.Column(db.String(50))
     thumbnail = db.Column(db.String(50))
-    orientation = db.Column(db.Integer)
+    # rotation = db.Column(db.Integer)
     comment = db.Column(db.String(140))
-    # date = db.Column(db.String(140))  #  TODO: решить, как работать с датой и временем
+    datetime = db.Column(db.String(20))  # TODO: решить, как работать с датой и временем
     lat = db.Column(db.Float)
     lng = db.Column(db.Float)
     timestamp = db.Column(db.DateTime)

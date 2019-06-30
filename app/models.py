@@ -32,6 +32,7 @@ class Trail(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    private = db.Column(db.Boolean, default=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     photos = db.relationship('Photo', backref='trail', lazy='dynamic')
 
@@ -48,8 +49,7 @@ class Photo(db.Model):
     lat = db.Column(db.Float)
     lng = db.Column(db.Float)
     timestamp = db.Column(db.DateTime)
-    is_visible = db.Column(db.Boolean, default=True)
-    is_deleted = db.Column(db.Boolean, default=False)
+    deleted = db.Column(db.Boolean, default=False)
     trail_id = db.Column(db.Integer, db.ForeignKey('trail.id'))
 
     def __repr__(self):

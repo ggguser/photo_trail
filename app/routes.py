@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, PhotoForm
-from app.exif import get_exif_data, get_exif_date_location, create_thumbnail
+from app.exif import get_exif_data, get_exif_location, create_thumbnail, get_exif_datetime
 from app.models import User, Trail, Photo
 
 import os
@@ -18,7 +18,6 @@ from app.exif import get_exif_orientation
 # from phototrail import app
 
 photos = []
-
 
 @app.route('/')
 @app.route('/index')
@@ -90,29 +89,31 @@ def create():
     form = PhotoForm()
     photo = Photo()
 
+
     if form.validate_on_submit():
         size = (400, 400)
-        photo_uuid = str(uuid4())
-        photo_file = secure_filename(photo_uuid + '.jpg')
-        thumbnail_file = secure_filename(photo_uuid + '_thumbnail.jpg')
-        photo_path = os.path.join(app.config['IMAGE_DIR'], photo_file)
-        thumbnail_path = os.path.join(app.config['IMAGE_DIR'], thumbnail_file)
-        form.photo.data.save(photo_path)
-        exif_data = get_exif_data(photo_path)
-        date_time, lat, lng = get_exif_date_location(exif_data)
-        rotation = get_exif_orientation(exif_data)
-        create_thumbnail(photo_path, thumbnail_path, size, rotation)
 
-        photo.filename = secure_filename(photo_uuid + '.jpg')
-        photo.thumbnail = secure_filename(photo_uuid + '_thumbnail.jpg')
-        photo.original_filename = form.photo.data.filename
+        photo.uuid = str(uuid4())
+        photo.filename = secure_filename(photo.uuid + '.jpg')
+        photo.thumbnail = secure_filename(photo.uuid + '_thumbnail.jpg')
+        photo_path = os.path.join(app.config['IMAGE_DIR'], photo.filename)
+        thumbnail_path = os.path.join(app.config['IMAGE_DIR'], photo.thumbnail)
+        form.photo.data.save(photo_path)
+
+        exif_data = get_exif_data(photo_path)
+
+        photo.original_filename = form.photo.data.filename[:50]
+        photo.datetime = get_exif_datetime(exif_data)
+        photo.lat, photo.lng = get_exif_location(exif_data)
+        rotation = get_exif_orientation(exif_data)
+
+        create_thumbnail(photo_path, thumbnail_path, size, rotation)
 
         photos.append(photo)
 
+        return render_template('create.html', form=form, photos=photos)
 
-        return render_template('create.html', date_time=date_time, lat=lat, lng=lng, form=form, photos=photos)
-
-    return render_template('create.html', form=form)
+    return render_template('create.html', form=form, photos=photos)
 
 
 

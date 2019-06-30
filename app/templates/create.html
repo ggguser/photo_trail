@@ -2,28 +2,40 @@
 
 {% block content %}
 
-{% for photo in photos %}
-    <img src="{{ url_for('static', filename='photos/' + photo) }}"
-         width="200"
-         class={{ rotation }}><br>
-    {{ rotation, date_time, lat, lng }}<br>
-{% endfor %}
+      <div class="album py-2 bg-light">
+    <div class="container">
+
+      <div class="row">
+
+    {% for photo in photos %}
+        {% include '_photo.html' %}
+{#        <img src="{{ url_for('static', filename='photos/' + photo) }}"#}
+{#             width="200"#}
+{#             class={{ rotation }}><br>#}
+{#        {{ rotation, date_time, lat, lng }}<br>#}
+    {% endfor %}
+
+        </div>
+    </div>
+</div>
 
 
-{% if current_user.is_authenticated %}
-    <form method="post" enctype="multipart/form-data">
-        {{ form.hidden_tag() }}
-        {{ form.photo }}
-        <input type="submit" class="btn btn-primary">
-    </form>
+    {% if current_user.is_authenticated %}
+        <div align="center">
+            <form method="post" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div>{{ form.photo }} {{ form.submit }}</div>
+            <div>{{ form.private() }} {{ form.private.label }}</div>
+
+        </form>
+        </div>
 
 
-
-     {% for error in form.photo.errors %}
+        {% for error in form.photo.errors %}
             <span style="color: red;">{{ error }}</span>
-     {% endfor %}
+        {% endfor %}
 
-{% else %}
-<a href="{{ url_for('login') }}">Залогиньтесь</a>, пожалуйста!
-{% endif %}
+    {% else %}
+        <a href="{{ url_for('login') }}">Залогиньтесь</a>, пожалуйста!
+    {% endif %}
 {% endblock %}

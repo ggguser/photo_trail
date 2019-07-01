@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Sign In</h1>
-    <form action="" method="post" novalidate>
+    <body class="text-center">
+    <form action="" method="post" novalidate class="form-signin">
+        <h1 class="h3 mb-3 font-weight-normal">Sign In</h1>
+
         {{ form.hidden_tag() }}
         <p>
             {{ form.username.label }}<br>
@@ -21,5 +23,6 @@
         <p>{{ form.submit() }}</p>
     </form>
 
-    <p>New User? <a href="{{ url_for('register') }}">Click to Register!</a></p>
+    <p>Впервые у нас? Тогда <a href="{{ url_for('register') }}">зарегистрируйтесь</a>, пожалуйста</p>
+    </body>
 {% endblock %}

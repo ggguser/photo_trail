@@ -1,25 +1,28 @@
+from PIL import Image
 from werkzeug.urls import url_parse
+from werkzeug.utils import secure_filename
 
-from app import db
-from app.forms import LoginForm, RegistrationForm
-from app.models import User
+from app import app, db
+from app.forms import LoginForm, RegistrationForm, PhotoForm
+from app.exif import get_exif_data, get_exif_location, create_thumbnail, get_exif_datetime
+from app.models import User, Trail, Photo
 
 import os
-import uuid
+from uuid import uuid4
 
 from flask import render_template, request, url_for, redirect, flash
 from flask_login import current_user, login_user, logout_user, login_required
 
-from phototrail import app
+from app.exif import get_exif_orientation
+
+# from phototrail import app
 
 photos = []
-trails = [photos]
-
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html', title='Главная', trails=trails)
+    return render_template('index.html', title='Главная')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -30,7 +33,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
+            flash('Не подходит пароль или логин, а может и оба')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
@@ -56,24 +59,64 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('Congratulations, you are now a registered user!')
+        flash('Поздравляем с регистрацией!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Registration', form=form)
 
 
-@app.route('/upload', methods=['POST'])
-@login_required
-def upload():
-    if 'photo' not in request.files:
-        redirect(url_for('index'))
+# @app.route('/upload', methods=['POST'])
+# @login_required
+# def upload():
+#     photos = []
 
-    photo = request.files['photo']
-    photo_name = str(uuid.uuid4())
-    photos.append(photo_name)
-    trails.append(photos)
-    path = os.path.join(app.config['IMAGE_DIR'], photo_name)  # TODO: это можно переместить в config?
-    photo.save(path)  # TODO: загрузка нескольких файлов сразу
-    return redirect(url_for('create'))
+
+
+#     if 'photo' not in request.files:
+#         redirect(url_for('index'))
+#
+#     photo = request.files['photo']
+#     photo_name = str(uuid.uuid4())
+#     photos.append(photo_name)
+#     trails.append(photos)
+#     path = os.path.join(app.config['IMAGE_DIR'], photo_name)  # TODO: это можно переместить в config?
+#     photo.save(path)  # TODO: загрузка нескольких файлов сразу
+#     return redirect(url_for('create'))
+
+
+@app.route('/create', methods=['GET', 'POST'])
+@login_required
+def create():
+    form = PhotoForm()
+    photo = Photo()
+
+
+    if form.validate_on_submit():
+        size = (400, 400)
+
+        photo.uuid = str(uuid4())
+        photo.filename = secure_filename(photo.uuid + '.jpg')
+        photo.thumbnail = secure_filename(photo.uuid + '_thumbnail.jpg')
+        photo_path = os.path.join(app.config['IMAGE_DIR'], photo.filename)
+        thumbnail_path = os.path.join(app.config['IMAGE_DIR'], photo.thumbnail)
+        form.photo.data.save(photo_path)
+
+        exif_data = get_exif_data(photo_path)
+
+        photo.original_filename = form.photo.data.filename[:50]
+        photo.datetime = get_exif_datetime(exif_data)
+        photo.lat, photo.lng = get_exif_location(exif_data)
+        rotation = get_exif_orientation(exif_data)
+
+        create_thumbnail(photo_path, thumbnail_path, size, rotation)
+
+        photos.append(photo)
+
+        return render_template('create.html', form=form, photos=photos)
+
+    return render_template('create.html', form=form, photos=photos)
+
+
+
 
 
 @app.route('/user/<username>')
@@ -81,20 +124,18 @@ def upload():
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     trails = [
-        {'author': user, 'comment': 'Test post #1'},
-        {'author': user, 'comment': 'Test post #2'}
+        {'author': user, 'comment': 'Test trail #1'},
+        {'author': user, 'comment': 'Test trail #2'}
     ]
     return render_template('user.html', user=user, trails=trails)
 
 
-@app.route('/create')
-@login_required
-def create():
-    return render_template('create.html', username=current_user)
+# @app.route('/create')
+# @login_required
+# def create():
+#     form = UploadForm()
+#     return render_template('create.html', username=current_user, form=form)
 
 
-if __name__ == '__main__':
-    # db.init_app(app)
-    # db.create_all()
-
-    app.run(port=9874, debug=True)
+# if __name__ == '__main__':
+#     app.run(port=9873, debug=True)

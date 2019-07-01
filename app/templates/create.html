@@ -1,14 +1,43 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% if current_user.is_authenticated %}
-    <form action="{{ url_for('upload') }}"
-          method="POST"
-          enctype="multipart/form-data">
-        <input type="file" name="photo" accept="image/jpeg" required>
-        <button>Upload</button>
-    </form>
-{% else %}
-    <a href="{{ url_for('login') }}">Please Login!</a>
-{% endif %}
+
+    <div class="album py-1 bg-light">
+        <div class="container">
+            <div class="row">
+
+                {% for photo in photos %}
+
+                    {% include '_photo.html' %}
+
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+
+
+    {% if current_user.is_authenticated %}
+        <form method="post" enctype="multipart/form-data">
+
+            <div class="form-group col-md-5">
+
+                {% for error in form.photo.errors %}
+                    <div class="alert alert-warning">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+
+
+                {{ form.hidden_tag() }}
+                <div>{{ form.photo }} {{ form.submit }}</div>
+                <div>{{ form.private() }} {{ form.private.label }}</div>
+            </div>
+        </form>
+
+
+
+    {% else %}
+        <a href="{{ url_for('login') }}">Залогиньтесь</a>, пожалуйста!
+    {% endif %}
 {% endblock %}

@@ -1,5 +1,6 @@
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
+from flask_wtf import FlaskForm, widgets
+from flask_wtf.file import FileRequired, FileAllowed
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, FileField, MultipleFileField
 from wtforms.validators import DataRequired, EqualTo, Email, ValidationError, Length
 
 from app.models import User
@@ -22,10 +23,17 @@ class RegistrationForm(FlaskForm):
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
-            raise ValidationError('Please use a different username.')
+            raise ValidationError('Это имя уже кем-то занято, попробуйте другое')
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
-            raise ValidationError('Please use a different email address.')
+            raise ValidationError('На этот адрес уже зарегистрировался кто-то другой')
+
+
+class PhotoForm(FlaskForm):
+    private = BooleanField('Спрятать эти фотографии')
+    submit = SubmitField('Загрузить')
+    photo = FileField(validators=[FileRequired(),
+                                  FileAllowed(['jpg', 'jpeg'], 'Подойдут только jpeg файлы')])
 

@@ -1,4 +1,4 @@
-Запуск:
-flask db migrate
-flask db upgrade
+Запуск:\
+flask db migrate \
+flask db upgrade \
 flask run

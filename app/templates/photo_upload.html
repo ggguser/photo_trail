@@ -8,7 +8,7 @@
 
                 {% for photo in photos %}
 
-                    {% include '_photo.html' %}
+                    {% include '_photo_edit.html' %}
 
                 {% endfor %}
 
@@ -30,7 +30,7 @@
 
 
                 {{ form.hidden_tag() }}
-                <div>{{ form.photo }} {{ form.submit }}</div>
+                <div>{{ form.photo }} {{ form.submit_photo }}</div>
                 <div>{{ form.private() }} {{ form.private.label }}</div>
             </div>
         </form>

@@ -15,13 +15,21 @@
                 width="200">
         <div class="card-body">
             <p class="card-text">{{ photo.datetime, photo.lat, photo.lng }}</p>
+                        <div><small class="text-muted">{{ photo.original_filename }}</small></div>
+
             <div class="d-flex justify-content-between align-items-center">
+
                 <div class="btn-group">
+
                     <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
                     <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-
+                    <form action="{{ url_for('delete_photo', photo_id=photo.uuid) }}" method="post">
+                        {{ photo_edit.hidden_tag() }}
+                        {{ photo_edit.delete }}
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Delete</button>
+                    </form>
                 </div>
-                <div align="left"><small class="text-muted">{{ photo.original_filename[:20] }}</small></div>
+
 
             </div>
         </div>

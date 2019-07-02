@@ -14,11 +14,20 @@
                 class="img-thumbnail"  alt="..."
                 width="200">
         <div class="card-body">
-            <p class="card-text">{{ photo.datetime, photo.lat, photo.lng, photo.area }}</p>
-            {% if photo.error == 'unsupported_country' %}
-            <p class="btn-warning">Это не Россия, а {{ photo.country }}!</p>
+
+            {% if photo.datetime and photo.area %}
+                <p class="card-text">{{ photo.datetime, photo.area }}</p>
             {% endif %}
-                        <div><small class="text-muted">{{ photo.original_filename }}</small></div>
+
+            {% if photo.error == 'unsupported_country' %}
+                <p class="btn-warning">Это не Россия, а {{ photo.country }}!</p>
+            {% endif %}
+
+            {% if not photo.lat or not photo.lng %}
+                <p class="btn-warning">Фото без координат!</p>
+            {% endif %}
+
+            <div><small class="text-muted">{{ photo.original_filename }}</small></div>
 
             <div class="d-flex justify-content-between align-items-center">
 

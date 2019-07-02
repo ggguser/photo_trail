@@ -113,16 +113,17 @@ def create():
         photo.datetime = get_exif_datetime(exif_data)
 
         photo.lat, photo.lng = get_exif_location(exif_data)
+        if photo.lat and photo.lng:
+
+            geocoder_info = get_json_from_yandex(f'{photo.lng},{photo.lat}')
+            photo.country = get_country_name(geocoder_info)
+            photo.area = get_area_name(geocoder_info)
+
+            if not check_country(photo.country):
+                photo.error = 'unsupported_country'
+
         rotation = get_exif_orientation(exif_data)
-
         create_thumbnail(photo_path, thumbnail_path, size, rotation)
-
-        geocoder_info = get_json_from_yandex(f'{photo.lng},{photo.lat}')
-        photo.country = get_country_name(geocoder_info)
-        photo.area = get_area_name(geocoder_info)
-
-        if not check_country(photo.country):
-            photo.error = 'unsupported_country'
 
         photos.append(photo)
 

@@ -1,9 +1,8 @@
-from PIL import Image
 from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
 
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, PhotoForm
+from app.forms import LoginForm, RegistrationForm, PhotoUploadForm, PhotoEditForm, TrailUploadForm, PhotoDeleteForm
 from app.exif import get_exif_data, get_exif_location, create_thumbnail, get_exif_datetime
 from app.models import User, Trail, Photo
 
@@ -69,8 +68,6 @@ def register():
 # def upload():
 #     photos = []
 
-
-
 #     if 'photo' not in request.files:
 #         redirect(url_for('index'))
 #
@@ -83,12 +80,18 @@ def register():
 #     return redirect(url_for('create'))
 
 
-@app.route('/create', methods=['GET', 'POST'])
+@app.route('/upload', methods=['GET', 'POST'])
 @login_required
 def create():
-    form = PhotoForm()
-    photo = Photo()
 
+    global photos
+
+    form = PhotoUploadForm()
+    save = TrailUploadForm()
+    edit = PhotoEditForm()
+    delete = PhotoDeleteForm()
+    photo = Photo()
+    trail = Trail()
 
     if form.validate_on_submit():
         size = (400, 400)
@@ -105,18 +108,95 @@ def create():
         photo.original_filename = form.photo.data.filename[:50]
         photo.datetime = get_exif_datetime(exif_data)
         photo.lat, photo.lng = get_exif_location(exif_data)
+        photo.deleted = False
+
         rotation = get_exif_orientation(exif_data)
 
         create_thumbnail(photo_path, thumbnail_path, size, rotation)
 
         photos.append(photo)
 
-        return render_template('create.html', form=form, photos=photos)
+        return render_template('photo_upload.html', form=form, photos=photos, save=save, edit=edit, delete=delete)
+        # return render_template(url_for('photo_edit'), photo_id=photo.uuid)
+    return render_template('photo_upload.html', form=form, photos=photos, save=save, edit=edit, delete=delete)
 
-    return render_template('create.html', form=form, photos=photos)
+
+@app.route('/user/<photo_id>/remove', methods=['POST'])
+def delete_photo(photo_id):
+    delete = PhotoDeleteForm()
+
+    global photos
+
+    if delete.validate_on_submit():
+        result = []
+        for photo in photos:
+            if photo.uuid != photo_id:
+                result.append(photo)
+        photos = result
+        return redirect(url_for('create'))
 
 
 
+    # @app.route('/user/<photo_id>/remove', methods=['POST'])
+    # def delete_photo(photo_id):
+    #     global photos
+    #     if delete.validate_on_submit():
+    #         result = []
+    #         for photo in photos:
+    #             if photo.uuid != photo_id:
+    #                 result.append(photo)
+    #         photos = result
+    #     return render_template('photo_upload.html', form=form, photos=photos, save=save, edit=edit, delete=delete)
+
+
+
+    # if save.validate_on_submit():
+    #
+    #     trail.user_id = current_user
+
+
+
+
+@app.route('/user/<photo_id>/edit', methods=['GET', 'POST'])
+@login_required
+def photo_edit(photo_id):
+    edit = PhotoEditForm()
+    return render_template('photo_edit.html')
+
+
+
+
+@app.route('/save', methods=['GET', 'POST'])
+@login_required
+def save_trail():
+    save = TrailUploadForm()
+    trail = Trail()
+    if save.validate_on_submit():
+        pass
+
+
+# @app.route('/user/<photo_id>/remove', methods=['POST'])
+# @login_required
+# def delete_photo(photo_id):
+
+
+    # result = []
+    # for photo in photos:
+    #     if photo.uuid != photo_id:
+    #         result.append(photo)
+    # photos = result
+
+    # photos = list(filter(lambda photos: photos.uuid != photo_id), photos)
+    # photo_form = PhotoEditForm()
+
+    # return render_template('user.html')
+
+    # return render_template('photo_upload.html', form=form, photos=photos, save=save, edit=edit)
+    # return render_template('_photo_edit.html', photo=photo, edit=edit)
+
+    # render_template('photo_upload.html', form=form, photos=[], save=save, edit=edit)
+
+    # return redirect(url_for('create'))
 
 
 @app.route('/user/<username>')

@@ -1,0 +1,18 @@
+<div class="media">
+  <img src="{{ url_for('static', filename='photos/' + photo.thumbnail) }}"
+       class="mr-3" width="200" alt="...">
+  <div class="media-body">
+    <h5 class="mt-0">Media heading</h5>
+    Cras sit amet nibh libero, in gravida nulla. Nu
+<div class="btn-group">
+
+                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                    <form action="{{ url_for('delete_photo', photo_id=photo.uuid) }}" method="post">
+                        {{ edit.hidden_tag() }}
+                        {{ edit.delete }}
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Delete</button>
+                    </form>
+                </div>
+      </div>
+    </div>

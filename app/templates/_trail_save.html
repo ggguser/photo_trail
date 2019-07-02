@@ -1,0 +1,17 @@
+
+        <form method="post" enctype="multipart/form-data">
+
+            <div class="form-group col-md-5">
+
+                {% for error in save.save.errors %}
+                    <div class="alert alert-warning">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+
+
+                {{ save.hidden_tag() }}
+
+                <p><div>{{ save.private() }} {{ save.private.label }}</div></p>
+            </div>
+        </form>

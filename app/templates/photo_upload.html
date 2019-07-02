@@ -7,9 +7,9 @@
             <div class="row">
 
                 {% for photo in photos %}
-
+                {% if photo %}
                     {% include '_photo_edit.html' %}
-
+                {% endif %}
                 {% endfor %}
 
             </div>
@@ -29,11 +29,14 @@
                 {% endfor %}
 
 
+
                 {{ form.hidden_tag() }}
-                <div>{{ form.photo }} {{ form.submit_photo }}</div>
-                <div>{{ form.private() }} {{ form.private.label }}</div>
+                <div>{{ form.photo }} {{ form.submit }}</div>
+                <div>{{ save.private() }} {{ save.private.label }}</div>
             </div>
         </form>
+
+
 
 
 

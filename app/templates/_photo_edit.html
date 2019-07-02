@@ -24,8 +24,8 @@
                     <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
                     <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
                     <form action="{{ url_for('delete_photo', photo_id=photo.uuid) }}" method="post">
-                        {{ photo_edit.hidden_tag() }}
-                        {{ photo_edit.delete }}
+                        {{ edit.hidden_tag() }}
+                        {{ edit.delete }}
                         <button type="button" class="btn btn-sm btn-outline-secondary">Delete</button>
                     </form>
                 </div>

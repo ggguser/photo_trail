@@ -31,9 +31,24 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('На этот адрес уже зарегистрировался кто-то другой')
 
 
-class PhotoForm(FlaskForm):
-    private = BooleanField('Спрятать эти фотографии')
+class PhotoUploadForm(FlaskForm):
     submit = SubmitField('Загрузить')
     photo = FileField(validators=[FileRequired(),
                                   FileAllowed(['jpg', 'jpeg'], 'Подойдут только jpeg файлы')])
 
+
+class PhotoEditForm(FlaskForm):
+    area = StringField('Username', validators=[DataRequired()])
+    comment = TextAreaField('About me', validators=[Length(min=0, max=140)])
+    delete = SubmitField('del')
+    save = SubmitField('Submit')
+
+
+class PhotoDeleteForm(FlaskForm):
+    delete = SubmitField('Delete')
+
+
+class TrailUploadForm(FlaskForm):
+    private = BooleanField('Сделать фотографии приватным')
+    comment = TextAreaField('Описание')
+    save = SubmitField('Сохранить эти фотографии')

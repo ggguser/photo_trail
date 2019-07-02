@@ -1,0 +1,206 @@
+{
+  'response': {
+    'GeoObjectCollection': {
+      'metaDataProperty': {
+        'GeocoderResponseMetaData': {
+          'request': '54.497181, 53.845044',
+          'found': '4',
+          'results': '10',
+          'Point': {
+            'pos': '54.497181 53.845044'
+          }
+        }
+      },
+      'featureMember': [
+        {
+          'GeoObject': {
+            'metaDataProperty': {
+              'GeocoderMetaData': {
+                'kind': 'area',
+                'text': 'Россия, Республика Башкортостан, Альшеевский район',
+                'precision': 'other',
+                'Address': {
+                  'country_code': 'RU',
+                  'formatted': 'Россия, Республика Башкортостан, Альшеевский район',
+                  'Components': [
+                    {
+                      'kind': 'country',
+                      'name': 'Россия'
+                    },
+                    {
+                      'kind': 'province',
+                      'name': 'Приволжский федеральный округ'
+                    },
+                    {
+                      'kind': 'province',
+                      'name': 'Республика Башкортостан'
+                    },
+                    {
+                      'kind': 'area',
+                      'name': 'Альшеевский район'
+                    }
+                  ]
+                },
+                'AddressDetails': {
+                  'Country': {
+                    'AddressLine': 'Россия, Республика Башкортостан, Альшеевский район',
+                    'CountryNameCode': 'RU',
+                    'CountryName': 'Россия',
+                    'AdministrativeArea': {
+                      'AdministrativeAreaName': 'Республика Башкортостан',
+                      'SubAdministrativeArea': {
+                        'SubAdministrativeAreaName': 'Альшеевский район'
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            'description': 'Республика Башкортостан, Россия',
+            'name': 'Альшеевский район',
+            'boundedBy': {
+              'Envelope': {
+                'lowerCorner': '54.345622 53.702905',
+                'upperCorner': '55.497954 54.245803'
+              }
+            },
+            'Point': {
+              'pos': '54.927946 53.958642'
+            }
+          }
+        },
+        {
+          'GeoObject': {
+            'metaDataProperty': {
+              'GeocoderMetaData': {
+                'kind': 'province',
+                'text': 'Россия, Республика Башкортостан',
+                'precision': 'other',
+                'Address': {
+                  'country_code': 'RU',
+                  'formatted': 'Россия, Республика Башкортостан',
+                  'Components': [
+                    {
+                      'kind': 'country',
+                      'name': 'Россия'
+                    },
+                    {
+                      'kind': 'province',
+                      'name': 'Приволжский федеральный округ'
+                    },
+                    {
+                      'kind': 'province',
+                      'name': 'Республика Башкортостан'
+                    }
+                  ]
+                },
+                'AddressDetails': {
+                  'Country': {
+                    'AddressLine': 'Россия, Республика Башкортостан',
+                    'CountryNameCode': 'RU',
+                    'CountryName': 'Россия',
+                    'AdministrativeArea': {
+                      'AdministrativeAreaName': 'Республика Башкортостан'
+                    }
+                  }
+                }
+              }
+            },
+            'description': 'Россия',
+            'name': 'Республика Башкортостан',
+            'boundedBy': {
+              'Envelope': {
+                'lowerCorner': '53.157322 51.570524',
+                'upperCorner': '59.997571 56.534093'
+              }
+            },
+            'Point': {
+              'pos': '56.525537 54.2715'
+            }
+          }
+        },
+        {
+          'GeoObject': {
+            'metaDataProperty': {
+              'GeocoderMetaData': {
+                'kind': 'province',
+                'text': 'Россия, Приволжский федеральный округ',
+                'precision': 'other',
+                'Address': {
+                  'country_code': 'RU',
+                  'formatted': 'Россия, Приволжский федеральный округ',
+                  'Components': [
+                    {
+                      'kind': 'country',
+                      'name': 'Россия'
+                    },
+                    {
+                      'kind': 'province',
+                      'name': 'Приволжский федеральный округ'
+                    }
+                  ]
+                },
+                'AddressDetails': {
+                  'Country': {
+                    'AddressLine': 'Россия, Приволжский федеральный округ',
+                    'CountryNameCode': 'RU',
+                    'CountryName': 'Россия'
+                  }
+                }
+              }
+            },
+            'description': 'Россия',
+            'name': 'Приволжский федеральный округ',
+            'boundedBy': {
+              'Envelope': {
+                'lowerCorner': '41.776287 49.801539',
+                'upperCorner': '61.690455 61.66299'
+              }
+            },
+            'Point': {
+              'pos': '51.524283 55.485362'
+            }
+          }
+        },
+        {
+          'GeoObject': {
+            'metaDataProperty': {
+              'GeocoderMetaData': {
+                'kind': 'country',
+                'text': 'Россия',
+                'precision': 'other',
+                'Address': {
+                  'country_code': 'RU',
+                  'formatted': 'Россия',
+                  'Components': [
+                    {
+                      'kind': 'country',
+                      'name': 'Россия'
+                    }
+                  ]
+                },
+                'AddressDetails': {
+                  'Country': {
+                    'AddressLine': 'Россия',
+                    'CountryNameCode': 'RU',
+                    'CountryName': 'Россия'
+                  }
+                }
+              }
+            },
+            'name': 'Россия',
+            'boundedBy': {
+              'Envelope': {
+                'lowerCorner': '19.484764 41.18599',
+                'upperCorner': '191.128003 81.886117'
+              }
+            },
+            'Point': {
+              'pos': '99.505405 61.698653'
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -21,9 +21,7 @@
 
             {% if photo.error == 'unsupported_country' %}
                 <p class="btn-warning">Это не Россия, а {{ photo.country }}!</p>
-            {% endif %}
-
-            {% if not photo.lat or not photo.lng %}
+            {% elif photo.error == 'no_coordinates' %}
                 <p class="btn-warning">Фото без координат!</p>
             {% endif %}
 

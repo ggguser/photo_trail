@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, PhotoUploadForm, PhotoEditForm, TrailUploadForm, PhotoDeleteForm
 from app.exif import get_exif_data, get_exif_location, create_thumbnail, get_exif_datetime
+from app.geocoder import get_area_name, get_json_from_yandex
 from app.models import User, Trail, Photo
 
 import os
@@ -18,6 +19,7 @@ from app.exif import get_exif_orientation
 
 photos = []
 
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -29,6 +31,7 @@ def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = LoginForm()
+
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
@@ -106,13 +109,23 @@ def create():
         exif_data = get_exif_data(photo_path)
 
         photo.original_filename = form.photo.data.filename[:50]
+
         photo.datetime = get_exif_datetime(exif_data)
         photo.lat, photo.lng = get_exif_location(exif_data)
-        photo.deleted = False
-
         rotation = get_exif_orientation(exif_data)
 
         create_thumbnail(photo_path, thumbnail_path, size, rotation)
+
+        geocoder_info = get_json_from_yandex(f'{photo.lng},{photo.lat}')
+        country = get_area_name(geocoder_info)
+
+        # if country
+
+        photo.area = get_area_name(geocoder_info)
+
+
+
+        photo.deleted = False
 
         photos.append(photo)
 

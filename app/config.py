@@ -13,5 +13,18 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
-class Messages():
+class Messages:
     pass
+
+
+class Russia:
+    def __init__(self,
+                 name='Россия',
+                 areas=85):
+        self.name = name
+        self.areas = areas
+
+
+
+
+

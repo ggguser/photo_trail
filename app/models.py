@@ -51,12 +51,14 @@ class Photo(db.Model):
     thumbnail = db.Column(db.String(50))
     # rotation = db.Column(db.Integer)
     comment = db.Column(db.String(140))
+    error = db.Column(db.String(140), default=None)
+    country = db.Column(db.String(140))
     area = db.Column(db.String(140))
     datetime = db.Column(db.String(20))  # TODO: решить, как работать с датой и временем
-    lat = db.Column(db.Float)
     lng = db.Column(db.Float)
+    lat = db.Column(db.Float)
     timestamp = db.Column(db.DateTime)
-    # deleted = db.Column(db.Boolean, default=False)
+    deleted = db.Column(db.Boolean, default=False)  # TODO: возможно лучше timestamp, чтобы удалять старые
     trail_id = db.Column(db.Integer, db.ForeignKey('trail.id'))
 
     def __repr__(self):

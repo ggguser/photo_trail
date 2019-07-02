@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, PhotoUploadForm, PhotoEditForm, TrailUploadForm, PhotoDeleteForm
 from app.exif import get_exif_data, get_exif_location, create_thumbnail, get_exif_datetime
-from app.geocoder import get_area_name, get_json_from_yandex
+from app.geocoder import get_area_name, get_json_from_yandex, check_country, get_country_name
 from app.models import User, Trail, Photo
 
 import os
@@ -111,21 +111,18 @@ def create():
         photo.original_filename = form.photo.data.filename[:50]
 
         photo.datetime = get_exif_datetime(exif_data)
+
         photo.lat, photo.lng = get_exif_location(exif_data)
         rotation = get_exif_orientation(exif_data)
 
         create_thumbnail(photo_path, thumbnail_path, size, rotation)
 
         geocoder_info = get_json_from_yandex(f'{photo.lng},{photo.lat}')
-        country = get_area_name(geocoder_info)
-
-        # if country
-
+        photo.country = get_country_name(geocoder_info)
         photo.area = get_area_name(geocoder_info)
 
-
-
-        photo.deleted = False
+        if not check_country(photo.country):
+            photo.error = 'unsupported_country'
 
         photos.append(photo)
 

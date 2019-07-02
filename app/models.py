@@ -33,8 +33,10 @@ class Trail(db.Model):
     comment = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     private = db.Column(db.Boolean, default=False)
+    deleted = db.Column(db.Boolean, default=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     photos = db.relationship('Photo', backref='trail', lazy='dynamic')
+
 
     def __repr__(self):
         return f'Trail {self.photos}'
@@ -49,11 +51,12 @@ class Photo(db.Model):
     thumbnail = db.Column(db.String(50))
     # rotation = db.Column(db.Integer)
     comment = db.Column(db.String(140))
+    area = db.Column(db.String(140))
     datetime = db.Column(db.String(20))  # TODO: решить, как работать с датой и временем
     lat = db.Column(db.Float)
     lng = db.Column(db.Float)
     timestamp = db.Column(db.DateTime)
-    deleted = db.Column(db.Boolean, default=False)
+    # deleted = db.Column(db.Boolean, default=False)
     trail_id = db.Column(db.Integer, db.ForeignKey('trail.id'))
 
     def __repr__(self):

@@ -30,14 +30,20 @@ def get_formatted_address(address: str):
 
 
 def get_area_name(geocoder_info):
-    area_name = geocoder_info['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['metaDataProperty']\
+    try:
+        area_name = geocoder_info['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['metaDataProperty']\
                 ['GeocoderMetaData']['AddressDetails']['Country']['AdministrativeArea']['AdministrativeAreaName']
+    except KeyError:
+        return None
     return area_name
 
 
 def get_country_name(geocoder_info):
-    country_name = geocoder_info['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']\
+    try:
+        country_name = geocoder_info['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']\
         ['metaDataProperty']['GeocoderMetaData']['AddressDetails']['Country']['CountryName']
+    except KeyError:
+        return None
     return country_name
 
 

@@ -1,7 +1,6 @@
 import requests
-from app.config import Russia
+from app.config import supported_countries
 
-country = Russia()
 
 def get_json_from_yandex(address: str):
     yandex_maps_url = 'https://geocode-maps.yandex.ru/1.x/'
@@ -48,6 +47,9 @@ def get_country_name(geocoder_info):
 
 
 def check_country(country_name):
-    return country_name == country.name
+    for country in supported_countries:
+        if country_name == country.name:
+            return True
+    return False
 
 

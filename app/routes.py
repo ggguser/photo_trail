@@ -106,15 +106,16 @@ def create():
         thumbnail_path = os.path.join(app.config['IMAGE_DIR'], photo.thumbnail)
         form.photo.data.save(photo_path)
 
-        exif_data = get_exif_data(photo_path)
-
         photo.original_filename = form.photo.data.filename[:50]
 
+        exif_data = get_exif_data(photo_path)
         photo.datetime = get_exif_datetime(exif_data)
-
         photo.lat, photo.lng = get_exif_location(exif_data)
-        if photo.lat and photo.lng:
 
+        if not photo.lat or not photo.lng:
+            photo.error = 'no_coordinates'
+
+        else:
             geocoder_info = get_json_from_yandex(f'{photo.lng},{photo.lat}')
             photo.country = get_country_name(geocoder_info)
             photo.area = get_area_name(geocoder_info)
@@ -132,19 +133,16 @@ def create():
     return render_template('photo_upload.html', form=form, photos=photos, save=save, edit=edit, delete=delete)
 
 
-@app.route('/user/<photo_id>/remove', methods=['POST'])
+@app.route('/user/<photo_id>/delete', methods=['POST'])
 def delete_photo(photo_id):
-    delete = PhotoDeleteForm()
 
     global photos
 
-    if delete.validate_on_submit():
-        result = []
-        for photo in photos:
-            if photo.uuid != photo_id:
-                result.append(photo)
-        photos = result
-        return redirect(url_for('create'))
+    for photo in photos:
+        if photo.uuid == photo_id:
+            photo.deleted = True
+
+    return redirect(url_for('create'))
 
 
 

@@ -7,7 +7,7 @@
             <div class="row">
 
                 {% for photo in photos %}
-                {% if photo %}
+                {% if not photo.deleted %}
                     {% include '_photo_edit.html' %}
                 {% endif %}
                 {% endfor %}

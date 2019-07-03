@@ -133,7 +133,8 @@ def create():
     return render_template('photo_upload.html', form=form, photos=photos, save=save, edit=edit, delete=delete)
 
 
-@app.route('/user/<photo_id>/delete', methods=['POST'])
+@app.route('/<photo_id>/delete', methods=['POST'])
+@login_required
 def delete_photo(photo_id):
 
     global photos
@@ -143,7 +144,6 @@ def delete_photo(photo_id):
             photo.deleted = True
 
     return redirect(url_for('create'))
-
 
 
     # @app.route('/user/<photo_id>/remove', methods=['POST'])

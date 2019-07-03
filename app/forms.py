@@ -39,7 +39,7 @@ class PhotoUploadForm(FlaskForm):
 
 class PhotoEditForm(FlaskForm):
     area = StringField('Username', validators=[DataRequired()])
-    comment = TextAreaField('About me', validators=[Length(min=0, max=140)])
+    comment = TextAreaField('Описание', validators=[Length(min=0, max=140)])
     delete = SubmitField('del')
     save = SubmitField('Submit')
 

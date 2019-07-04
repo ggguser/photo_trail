@@ -30,11 +30,13 @@
             <div class="d-flex justify-content-between align-items-center">
 
 
-                    <a href="https://yandex.ru/maps/?ll={{ photo.lng }}%2C{{ photo.lat }}" class="btn btn-sm btn-outline-secondary">На карте</a>
-                    <form action="{{ url_for('delete_photo', photo_id=photo.uuid) }}" method="post">
-                        {{ delete.hidden_tag() }}
-                        {{ delete.delete(class="btn btn-sm btn-outline-danger")}}
-                    </form>
+                <a href="https://yandex.ru/maps/?ll={{ photo.lng }}%2C{{ photo.lat }}"
+                   target="_blank"
+                   class="btn btn-sm btn-outline-secondary">На карте</a>  {# TODO: Сделать дроа-даун и выбор карты #}
+                <form action="{{ url_for('delete_photo', photo_id=photo.uuid) }}" method="post">
+                    {{ delete.hidden_tag() }}
+                    {{ delete.delete(class="btn btn-sm btn-outline-danger")}}
+                </form>
 
 
 

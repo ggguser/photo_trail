@@ -230,12 +230,16 @@ def save_trail():
 @app.route('/user/<username>')
 @login_required
 def user(username):
+    photos = []
     user = User.query.filter_by(username=username).first_or_404()
-    trails = [
-        {'author': user, 'comment': 'Test trail #1'},
-        {'author': user, 'comment': 'Test trail #2'}
-    ]
-    return render_template('user.html', user=user, trails=trails)
+    trails = Trail.query.filter_by(user_id=user.id)
+    # Photo.query.filter_by(trail_id=trails.id)
+
+    # Post.query.join(
+    #     followers, (followers.c.followed_id == Post.user_id)).filter(
+    #     followers.c.follower_id == self.id).order_by(
+    #     Post.timestamp.desc())
+    return render_template('user.html', user=user, trails=trails, photos=photos)
 
 
 # @app.route('/create')

@@ -16,6 +16,13 @@
     <div class="container">
 
       <div class="row">
+
+          {% for photo in trail.photos if not photo.deleted %}
+
+                        {% include '_photo_detail.html' %}
+
+                {% endfor %}
+
         </div>
     </div>
 </div>

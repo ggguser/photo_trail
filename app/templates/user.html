@@ -5,8 +5,10 @@
     <hr>
     {% for trail in trails %}
     <p>
-        {{ trail.author.username }} <br>
         <b>{{ trail.comment }}</b>
-    </p>
+
+    {% include '_trail.html' %}
+
+
     {% endfor %}
 {% endblock %}

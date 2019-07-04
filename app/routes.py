@@ -85,18 +85,16 @@ def register():
 
 @app.route('/upload', methods=['GET', 'POST'])
 @login_required
-def create():
+def upload():
 
     global photos
 
     form = PhotoUploadForm()
     save = TrailUploadForm()
-    edit = PhotoEditForm()
     delete = PhotoDeleteForm()
     photo = Photo()
-    trail = Trail()
 
-    if form.validate_on_submit():
+    if form.upload.data and form.validate():
         size = (400, 400)
 
         photo.uuid = str(uuid4())
@@ -128,9 +126,26 @@ def create():
 
         photos.append(photo)
 
-        return render_template('photo_upload.html', form=form, photos=photos, save=save, edit=edit, delete=delete)
-        # return render_template(url_for('photo_edit'), photo_id=photo.uuid)
-    return render_template('photo_upload.html', form=form, photos=photos, save=save, edit=edit, delete=delete)
+        return render_template('photo_upload.html', form=form, photos=photos, save=save, delete=delete)
+
+    if save.submit.data and save.validate():
+
+        trail = Trail(comment=save.comment.data,
+                      private=save.private.data,
+                      author=current_user)
+        db.session.add(trail)
+        # db.session.commit()
+
+        for photo in photos:
+            photo.trail_id = trail.id
+            db.session.add(photo)
+            db.session.commit()
+
+        photos = []
+
+        return redirect(url_for('index'))
+
+    return render_template('photo_upload.html', form=form, photos=photos, save=save, delete=delete)
 
 
 @app.route('/<photo_id>/delete', methods=['POST'])
@@ -138,12 +153,16 @@ def create():
 def delete_photo(photo_id):
 
     global photos
-
+    result = []
     for photo in photos:
         if photo.uuid == photo_id:
             photo.deleted = True
+     # Если не хотим добавлять в БД фотографии, удалённые на стадии загрузки, то включить этот блок
+        else:
+            result.append(photo)
+        photos = result
 
-    return redirect(url_for('create'))
+    return redirect(url_for('upload'))
 
 
     # @app.route('/user/<photo_id>/remove', methods=['POST'])

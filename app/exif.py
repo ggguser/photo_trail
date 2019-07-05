@@ -91,7 +91,9 @@ def create_thumbnail(photo, thumbnail, size, orientation):
 
 def get_exif_datetime(exif_data):
     photo_datetime = _get_if_exist(exif_data, 'Image DateTime')
-    return photo_datetime
+    if photo_datetime:
+        return datetime.strptime(photo_datetime.values, '%Y:%m:%d %H:%M:%S')
+    return None
 
 
 def convert_to_timestamp(date_time: str):

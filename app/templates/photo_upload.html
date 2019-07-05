@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+{% if current_user.is_authenticated %}
+
+
+    <form method="post" enctype="multipart/form-data">
+
+        <div class="form-group col-md-5">
+
+            {% for error in form.photo.errors %}
+                <div class="alert alert-warning">
+                    {{ error }}
+                </div>
+            {% endfor %}
+
+            {{ form.hidden_tag() }}
+            <div>{{ form.photo }} {{ form.upload }}</div>
+
+        </div>
+
+    </form>
+
+
+    <div class="album py-1 bg-light">
+        <div class="container">
+            <div class="row">
+
+                {% for photo in photos if not photo.deleted %}
+
+                        {% include '_photo_card.html' %}
+
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+
+
+
+{#    {% if photos|selectattr("deleted", 0) %}#}
+
+{#        {% for photo in photos|rejectattr("deleted", 1) %}#}
+{#            {%- if loop.index >= 1 %}{% break %}{% endif %}#}
+{#        {%- endfor %}#}
+
+{#    {% if not photos|rejectattr("deleted") %}#}
+    {% if photos %}
+        <form action="" method="post">
+            <div class="form-group col-md-5">
+                {{ save.hidden_tag() }}
+
+
+                <p>
+                    <div>{{ save.comment.label }}</div>
+                    <div>{{ save.comment(cols=32, rows=4) }} </div>
+                    <div>{{ save.private }} {{ save.private.label }}</div>
+                    <div>{{ save.submit() }}</div>
+
+                </p>
+            </div>
+        </form>
+    {% endif %}
+
+
+{% else %}
+    <a href="{{ url_for('login') }}">Войдите</a>, пожалуйста!
+{% endif %}
+
+{% endblock content %}

@@ -1,8 +1,8 @@
-"""users table
+"""from new venv
 
-Revision ID: 265b71920206
+Revision ID: cd80bae1130a
 Revises: 
-Create Date: 2019-06-29 12:07:43.503056
+Create Date: 2019-07-02 19:19:30.307135
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '265b71920206'
+revision = 'cd80bae1130a'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -31,6 +31,8 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('comment', sa.String(length=140), nullable=True),
     sa.Column('timestamp', sa.DateTime(), nullable=True),
+    sa.Column('private', sa.Boolean(), nullable=True),
+    sa.Column('deleted', sa.Boolean(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
@@ -38,13 +40,16 @@ def upgrade():
     op.create_index(op.f('ix_trail_timestamp'), 'trail', ['timestamp'], unique=False)
     op.create_table('photo',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('file', sa.String(length=36), nullable=True),
+    sa.Column('uuid', sa.String(length=36), nullable=True),
+    sa.Column('filename', sa.String(length=40), nullable=True),
+    sa.Column('original_filename', sa.String(length=50), nullable=True),
+    sa.Column('thumbnail', sa.String(length=50), nullable=True),
     sa.Column('comment', sa.String(length=140), nullable=True),
+    sa.Column('area', sa.String(length=140), nullable=True),
+    sa.Column('datetime', sa.String(length=20), nullable=True),
     sa.Column('lat', sa.Float(), nullable=True),
     sa.Column('lng', sa.Float(), nullable=True),
     sa.Column('timestamp', sa.DateTime(), nullable=True),
-    sa.Column('is_visible', sa.Boolean(), nullable=True),
-    sa.Column('is_deleted', sa.Boolean(), nullable=True),
     sa.Column('trail_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['trail_id'], ['trail.id'], ),
     sa.PrimaryKeyConstraint('id')

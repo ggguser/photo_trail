@@ -1,5 +1,6 @@
 # Project Specific
-data/*.md5
+
+*.sqlite
 
 # PyCharm
 .idea/

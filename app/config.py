@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
+supported_countries = []
 
 
 class Config(object):
@@ -13,5 +14,22 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
-class Messages():
+class Messages:
     pass
+
+
+class Country:
+    def __init__(self, name, number_of_areas):
+        self.name = name
+        self.number_of_areas = number_of_areas
+
+
+russia = Country(name='Россия', number_of_areas=85)
+
+supported_countries.append(russia)
+
+
+
+
+
+

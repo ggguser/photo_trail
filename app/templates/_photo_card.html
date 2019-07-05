@@ -1,0 +1,54 @@
+
+{#            <td>{{ trail.author.username }}<br>#}
+{#                {{ trail.comment }}<br>#}
+
+{#                        {{ rotation, date_time, lat, lng }}<br>#}
+
+
+
+
+
+
+
+
+
+
+<div class="col-md-3">
+    <div class="card mb-2 shadow-sm align-items-center">
+
+ <img src="{{ url_for('static', filename='photos/' + photo.thumbnail) }}"
+                class="img-thumbnail"  alt="..."
+                width="200">
+        <div class="card-body">
+            {# Перед тем как отображать проверка, что нет ошибок, есть дата и регион #}
+            {% if not photo.error and photo.datetime and photo.area %}
+                <p class="card-text">{{ photo.datetime, photo.area }}</p>
+            {% endif %}
+
+            {% if photo.error == 'unsupported_country' %}
+                <p class="btn-warning">Это не Россия, а {{ photo.country }}!</p>
+            {% elif photo.error == 'no_coordinates' %}
+                <p class="btn-warning">Это фото без координат!</p>
+            {% endif %}
+
+            <div><small class="text-muted">{{ photo.original_filename }}</small></div>
+
+            <div class="d-flex justify-content-between align-items-center">
+
+
+                <a href="https://yandex.ru/maps/?ll={{ photo.lng }}%2C{{ photo.lat }}"
+                   target="_blank"
+                   class="btn btn-sm btn-outline-secondary">На карте</a>  {# TODO: Сделать дроа-даун и выбор карты #}
+                <form action="{{ url_for('delete_photo', photo_id=photo.uuid) }}" method="post">
+                    {{ delete.hidden_tag() }}
+                    {{ delete.delete(class="btn btn-sm btn-outline-danger")}}
+                </form>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+

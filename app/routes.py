@@ -23,7 +23,8 @@ photos = []
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html', title='Главная')
+    trails = Trail.query.all()
+    return render_template('index.html', title='Главная', trails=trails)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -134,7 +135,7 @@ def upload():
                       private=save.private.data,
                       author=current_user)
         db.session.add(trail)
-        # db.session.commit()
+        db.session.commit()
 
         for photo in photos:
             photo.trail_id = trail.id
@@ -157,7 +158,7 @@ def delete_photo(photo_id):
     for photo in photos:
         if photo.uuid == photo_id:
             photo.deleted = True
-     # Если не хотим добавлять в БД фотографии, удалённые на стадии загрузки, то включить этот блок
+#  Если не хотим добавлять в БД фотографии, удалённые на стадии загрузки
         else:
             result.append(photo)
         photos = result

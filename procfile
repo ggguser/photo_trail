@@ -1,1 +1,1 @@
-web: flask db upgrade; flask translate compile; gunicorn photo-trail:app
+web: flask db upgrade; flask translate compile; gunicorn phototrail:app

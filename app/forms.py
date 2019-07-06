@@ -45,7 +45,7 @@ class PhotoUploadForm(FlaskForm):
 
 
 class PhotoDeleteForm(FlaskForm):
-    delete = SubmitField('Delete')
+    delete = SubmitField('X')
 
 
 class TrailUploadForm(FlaskForm):

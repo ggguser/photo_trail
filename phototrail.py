@@ -12,6 +12,12 @@ from app.routes import *
 # app.run(port=9874, debug=True)
 
 
+# from app.routes import start
+#
+# if __name__ == '__main__':
+#     start()
+
+
 @app.shell_context_processor
 def make_shell_context():
     return {'db': db, 'User': User, 'Trail': Trail, 'Photo': Photo}

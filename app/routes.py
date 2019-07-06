@@ -1,6 +1,8 @@
 from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
 
+from datetime import datetime
+
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, PhotoUploadForm, PhotoEditForm, TrailUploadForm, PhotoDeleteForm
 from app.exif import get_exif_data, get_exif_location, create_thumbnail, get_exif_datetime
@@ -133,7 +135,8 @@ def upload():
 
         trail = Trail(comment=save.comment.data,
                       private=save.private.data,
-                      author=current_user)
+                      author=current_user,
+                      timestamp=datetime.utcnow())
         db.session.add(trail)
         db.session.commit()
 

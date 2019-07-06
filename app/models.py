@@ -37,7 +37,6 @@ class Trail(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     photos = db.relationship('Photo', backref='trail', lazy='dynamic')
 
-
     def __repr__(self):
         return f'Trail {self.photos}'
 
@@ -58,7 +57,7 @@ class Photo(db.Model):
     datetime = db.Column(db.String(20))  # TODO: решить, как работать с датой и временем
     lng = db.Column(db.Float)
     lat = db.Column(db.Float)
-    timestamp = db.Column(db.DateTime)
+    # timestamp = db.Column(db.DateTime)
     deleted = db.Column(db.Boolean, default=False)  # TODO: возможно лучше timestamp, чтобы удалять старые
     trail_id = db.Column(db.Integer, db.ForeignKey('trail.id'))
 

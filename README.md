@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Lagunov-PRO/LP08_Photo_Trail.svg?branch=master)](https://travis-ci.org/Lagunov-PRO/LP08_Photo_Trail)
+
 ## Запуск
 flask db migrate \
 flask db upgrade \

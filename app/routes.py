@@ -5,7 +5,7 @@ from datetime import datetime
 
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, PhotoUploadForm, PhotoEditForm, TrailUploadForm, PhotoDeleteForm
-from app.exif import get_exif_data, get_exif_location, create_thumbnail, get_exif_datetime
+from app.exif import get_exif_data, get_exif_location, create_thumbnail, get_exif_datetime, get_exif_orientation
 from app.geocoder import get_area_name, get_json_from_yandex, check_country, get_country_name
 from app.models import User, Trail, Photo
 
@@ -15,7 +15,6 @@ from uuid import uuid4
 from flask import render_template, request, url_for, redirect, flash
 from flask_login import current_user, login_user, logout_user, login_required
 
-from app.exif import get_exif_orientation
 
 # from phototrail import app
 

@@ -86,7 +86,7 @@ def create_thumbnail(photo, thumbnail, size, orientation):
                 im = im.transpose(Image.ROTATE_90)
 
         im.thumbnail(size, Image.ANTIALIAS)
-        im.save(thumbnail, "JPEG", quality=100)
+        im.save(thumbnail, "JPEG", quality=80)
 
 
 def get_exif_datetime(exif_data):
@@ -94,37 +94,4 @@ def get_exif_datetime(exif_data):
     if photo_datetime:
         return datetime.strptime(photo_datetime.values, '%Y:%m:%d %H:%M:%S')
     return None
-
-
-def convert_to_timestamp(date_time: str):
-    date, time = date_time.split(' ')
-    year, month, day = date.split(':')
-    hour, minute, second = time.split(':')
-
-    # dt = datetime.strptime(date_time, '%Y:%m:%d %H:%M:%S')
-    # ts = time.mktime(dt.timetuple())
-    # return ts
-
-    return {
-        'year': year,
-        'month': month,
-        'day': day,
-        'hour': hour,
-        'minute': minute,
-        'second': second
-    }
-
-
-# def create_thumbnail(photo):
-#     size = (200, 200)
-#
-#     outfile = os.path.splitext(infile)[0] + ".thumbnail"
-#     if infile != outfile:
-#         try:
-#             im = Image.open(infile)
-#             im.thumbnail(size)
-#             im.save(outfile, "JPEG")
-#         except IOError:
-#             print("cannot create thumbnail for", infile)
-
 

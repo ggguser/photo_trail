@@ -1,5 +1,5 @@
 # from app import create_app, db
-# from app import app, db
+from app import app, db
 from app.models import User, Trail, Photo
 from app.routes import *
 
@@ -10,12 +10,6 @@ from app.routes import *
 # db.init_app(app)
 # db.create_all()
 # app.run(port=9874, debug=True)
-
-
-# from app.routes import start
-#
-# if __name__ == '__main__':
-#     start()
 
 
 @app.shell_context_processor

@@ -1,5 +1,5 @@
 import requests
-from app.config import supported_countries
+from config import supported_countries
 
 
 def get_json_from_yandex(address: str):
@@ -28,6 +28,15 @@ def get_formatted_address(address: str):
     return formatted_address
 
 
+def get_country_name(geocoder_info):
+    try:
+        country_name = geocoder_info['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']\
+        ['metaDataProperty']['GeocoderMetaData']['AddressDetails']['Country']['CountryName']
+    except KeyError:
+        return None
+    return country_name
+
+
 def get_area_name(geocoder_info):
     try:
         area_name = geocoder_info['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['metaDataProperty']\
@@ -37,13 +46,13 @@ def get_area_name(geocoder_info):
     return area_name
 
 
-def get_country_name(geocoder_info):
+def get_city_name(geocoder_info):
     try:
-        country_name = geocoder_info['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']\
-        ['metaDataProperty']['GeocoderMetaData']['AddressDetails']['Country']['CountryName']
+        area_name = geocoder_info['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['metaDataProperty']\
+                ['GeocoderMetaData']['AddressDetails']['Country']['AdministrativeArea']['AdministrativeAreaName']
     except KeyError:
         return None
-    return country_name
+    return area_name
 
 
 def check_country(country_name):

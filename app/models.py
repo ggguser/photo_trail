@@ -53,6 +53,7 @@ class Photo(db.Model):
     error = db.Column(db.String(140), default=None)
     country = db.Column(db.String(140))
     area = db.Column(db.String(140))
+    city = db.Column(db.String(140))
     # area_id = db.Column(db.Integer, db.ForeignKey('area.id'))  # TODO: на будущее, когда будет таблица с регионами
     datetime = db.Column(db.String(20))  # TODO: решить, как работать с датой и временем
     lng = db.Column(db.Float)

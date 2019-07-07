@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+{% if current_user.is_authenticated %}
+
+
+    <form method="post" enctype="multipart/form-data">
+
+        <div class="form-group col-md-5">
+
+            {% for error in form.file.errors %}
+                <div class="alert alert-warning">
+                    {{ error }}
+                </div>
+            {% endfor %}
+
+            {{ form.hidden_tag() }}
+            <div>{{ form.file }} {{ form.import_country }}</div>
+
+        </div>
+
+    </form>
+
+
+
+
+
+
+    {% if areas %}
+
+        <form action="" method="post">
+            <div class="form-group col-md-5">
+                {{ form.hidden_tag() }}
+
+
+                <p>
+                    <div>{{ form.country.label }}</div>
+                    <div>{{ form.country }} </div>
+                    <div>{{ form.submit() }}</div>
+
+                </p>
+            </div>
+        </form>
+
+        <table class="table table-bordered table-sm table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Название</th>
+      <th scope="col">ISO</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for name, iso in areas.items() %}
+      <tr>
+      <td>{{ name }}</td>
+      <td>{{ iso }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+    {% endif %}
+
+
+{% else %}
+    <a href="{{ url_for('login') }}">Войдите</a>, пожалуйста!
+{% endif %}
+
+{% endblock content %}

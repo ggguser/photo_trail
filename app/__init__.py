@@ -30,5 +30,5 @@ bootstrap = Bootstrap(app)
 #     return app
 
 
-from app import models
+# from app import models
 

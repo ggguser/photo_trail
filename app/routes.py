@@ -115,8 +115,8 @@ def import_country():
 
     if form.submit.data and form.validate():
         areas_count = len(areas)
-        name = form.name.data
-        iso = form.iso.data
+        name = form.name.data.strip()
+        iso = form.iso.data.strip()
         existing_country = Country.query.filter_by(iso=iso).first()
         if existing_country:
             Area.query.filter_by(country_id=existing_country.id).delete()

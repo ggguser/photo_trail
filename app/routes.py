@@ -97,16 +97,15 @@ def register():
 
 
 
-@app.route('/admin', methods=['GET', 'POST'])
+@app.route('/import', methods=['GET', 'POST'])
 @login_required
-def admin():
+def import_country():
 
     global areas
     areas_import = ImportAreasForm()
     form = AddCountryForm()
 
     countries = Country.query.all()
-
 
     if areas_import.file.data:
         stream = areas_import.file.data.read().decode('utf-8-sig').splitlines()
@@ -115,9 +114,14 @@ def admin():
         return render_template('add_country.html', areas_import=areas_import, form=form, areas=areas, countries=countries)
 
     if form.submit.data and form.validate():
-        country = Country(name=form.name.data)
-        # countries = Country.query.all()
-
+        areas_count = len(areas)
+        name = form.name.data
+        iso = form.iso.data
+        existing_country = Country.query.filter_by(iso=iso).first()
+        if existing_country:
+            Area.query.filter_by(country_id=existing_country.id).delete()
+            db.session.delete(existing_country)
+        country = Country(name=name, iso=iso, areas_count=areas_count)
         db.session.add(country)
         db.session.commit()
 
@@ -126,6 +130,7 @@ def admin():
             db.session.add(area)
             db.session.commit()
 
+        return redirect(url_for('import_country'))
 
     return render_template('add_country.html', areas_import=areas_import, form=form, countries=countries)
 

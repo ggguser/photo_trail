@@ -11,15 +11,14 @@
 
         <li class="list-group-item d-flex justify-content-between align-items-center">
             <a href="{{ country.name }}">{{ country.name }}</a>
-            <span class="badge badge-primary badge-pill">{{ country.count() }}</span>
+            {% if country.areas_count %}
+            <span class="badge badge-primary badge-pill">{{ country.areas_count }}</span>
+            {% else %}
+            <span class="badge badge-danger badge-pill">{{ country.areas_count }}</span>
+            {% endif %}
         </li>
     {% endfor %}
-
     </ul>
-
-{% for country in countries %}
-    <li><a href="{{ country.name }}">{{ country.name }}</a></li>
-{% endfor %}
 
 
     <form method="post" enctype="multipart/form-data">
@@ -49,7 +48,7 @@
 
                 <p>
                     <div>{{ form.name.label }}</div>
-                    <div>{{ form.name }} </div>
+                    <div>{{ form.name }} {{ form.iso }}</div>
                     <div>{{ form.submit() }}</div>
 
                 </p>
@@ -57,21 +56,21 @@
         </form>
 
         <table class="table table-bordered table-sm table-striped">
-  <thead>
-    <tr>
-      <th scope="col">Название</th>
-      <th scope="col">ISO</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for name, iso in areas.items() %}
-      <tr>
-      <td>{{ name }}</td>
-      <td>{{ iso }}</td>
-    </tr>
-  {% endfor %}
-  </tbody>
-</table>
+            <thead>
+            <tr>
+                <th scope="col">Название</th>
+                <th scope="col">ISO</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for name, iso in areas.items() %}
+                <tr>
+                    <td>{{ name }}</td>
+                    <td>{{ iso }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
     {% endif %}
 

@@ -56,6 +56,7 @@ class TrailUploadForm(FlaskForm):
 
 class AddCountryForm(FlaskForm):
     name = StringField('Страна', validators=[DataRequired(message='Нужно указать название страны')])
+    iso = StringField('Код ISO', validators=[DataRequired(message='Нужно указать код')])
     submit = SubmitField('Добавить страну')
 
 

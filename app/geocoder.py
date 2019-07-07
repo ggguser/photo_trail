@@ -1,5 +1,6 @@
 import requests
-from config import supported_countries
+
+from app.models import Country
 
 
 def get_json_from_yandex(address: str):
@@ -56,6 +57,7 @@ def get_city_name(geocoder_info):
 
 
 def check_country(country_name):
+    supported_countries = Country.query.all()
     for country in supported_countries:
         if country_name == country.name:
             return True

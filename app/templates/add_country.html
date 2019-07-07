@@ -1,9 +1,26 @@
 {% extends "base.html" %}
 
+
 {% block content %}
 
-
 {% if current_user.is_authenticated %}
+
+
+    <ul class="list-group">
+    {% for country in countries %}
+
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a href="{{ country.name }}">{{ country.name }}</a>
+            <span class="badge badge-primary badge-pill">{{ country.count() }}</span>
+        </li>
+    {% endfor %}
+
+    </ul>
+
+{% for country in countries %}
+    <li><a href="{{ country.name }}">{{ country.name }}</a></li>
+{% endfor %}
+
 
     <form method="post" enctype="multipart/form-data">
 

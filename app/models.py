@@ -66,6 +66,26 @@ class Photo(db.Model):
         return f'Photo {self.file}'
 
 
+class Country(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(140))
+    areas = db.relationship('Area', backref='country', lazy='dynamic')
+    areas_count = db.Column(db.Integer)
+
+    def __repr__(self):
+        return f'{self.name}'
+
+    def __str__(self):
+        return f'{self.name}'
+
+
+class Area(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(140))
+    iso = db.Column(db.String(10))
+    country_id = db.Column(db.Integer, db.ForeignKey('country.id'))
+
+
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))

@@ -105,14 +105,19 @@ def admin():
     areas_import = ImportAreasForm()
     form = AddCountryForm()
 
+    countries = Country.query.all()
+
+
     if areas_import.file.data:
         stream = areas_import.file.data.read().decode('utf-8-sig').splitlines()
         csv_import = csv.reader(stream, delimiter=';')
         areas = {str(area[0]): str(area[1]) for area in csv_import}
-        return render_template('add_country.html', areas_import=areas_import, form=form, areas=areas)
+        return render_template('add_country.html', areas_import=areas_import, form=form, areas=areas, countries=countries)
 
     if form.submit.data and form.validate():
         country = Country(name=form.name.data)
+        # countries = Country.query.all()
+
         db.session.add(country)
         db.session.commit()
 
@@ -122,7 +127,7 @@ def admin():
             db.session.commit()
 
 
-    return render_template('add_country.html', areas_import=areas_import, form=form)
+    return render_template('add_country.html', areas_import=areas_import, form=form, countries=countries)
 
 
 
@@ -202,7 +207,7 @@ def delete_photo(photo_id):
     for photo in photos:
         if photo.uuid == photo_id:
             photo.deleted = True
-#  Если не хотим добавлять в БД фотографии, удалённые на стадии загрузки
+#  Не добавлять в БД фотографии, удалённые на стадии загрузки
         else:
             result.append(photo)
         photos = result
@@ -300,6 +305,7 @@ def user(username):
         for photo in trail.photos:
             areas.append(photo.area)
     areas = list(set(areas))
+
     # Photo.query.filter_by(trail_id=trails.id)
 
     # Post.query.join(

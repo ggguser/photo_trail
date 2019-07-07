@@ -15,4 +15,5 @@ flask run
 * Поворачивать фотографии по EXIF тегу Orientation (exifread + Pillow)
 * Делать авторизацию и регистрацию (miguelgrinberg)
 * Оптимально разбивать проект на модули (miguelgrinberg)
+* Работать с датой (datetime)
 

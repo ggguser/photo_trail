@@ -1,0 +1,106 @@
+{
+  'response': {
+    'GeoObjectCollection': {
+      'metaDataProperty': {
+        'GeocoderResponseMetaData': {
+          'request': 'казань, большая 56',
+          'found': '1',
+          'results': '10',
+          'boundedBy': {
+            'Envelope': {
+              'lowerCorner': '-0.250001 -0.250003',
+              'upperCorner': '0.250001 0.250003'
+            }
+          }
+        }
+      },
+      'featureMember': [
+        {
+          'GeoObject': {
+            'metaDataProperty': {
+              'GeocoderMetaData': {
+                'kind': 'house',
+                'text': 'Россия, Республика Татарстан, Казань, микрорайон Адмиралтейская Слобода, Большая улица, 56',
+                'precision': 'exact',
+                'Address': {
+                  'country_code': 'RU',
+                  'formatted': 'Россия, Республика Татарстан, Казань, микрорайон Адмиралтейская Слобода, Большая улица, 56',
+                  'Components': [
+                    {
+                      'kind': 'country',
+                      'name': 'Россия'
+                    },
+                    {
+                      'kind': 'province',
+                      'name': 'Приволжский федеральный округ'
+                    },
+                    {
+                      'kind': 'province',
+                      'name': 'Республика Татарстан'
+                    },
+                    {
+                      'kind': 'area',
+                      'name': 'городской округ Казань'
+                    },
+                    {
+                      'kind': 'locality',
+                      'name': 'Казань'
+                    },
+                    {
+                      'kind': 'district',
+                      'name': 'микрорайон Адмиралтейская Слобода'
+                    },
+                    {
+                      'kind': 'street',
+                      'name': 'Большая улица'
+                    },
+                    {
+                      'kind': 'house',
+                      'name': '56'
+                    }
+                  ]
+                },
+                'AddressDetails': {
+                  'Country': {
+                    'AddressLine': 'Россия, Республика Татарстан, Казань, микрорайон Адмиралтейская Слобода, Большая улица, 56',
+                    'CountryNameCode': 'RU',
+                    'CountryName': 'Россия',
+                    'AdministrativeArea': {
+                      'AdministrativeAreaName': 'Республика Татарстан',
+                      'SubAdministrativeArea': {
+                        'SubAdministrativeAreaName': 'городской округ Казань',
+                        'Locality': {
+                          'LocalityName': 'Казань',
+                          'DependentLocality': {
+                            'DependentLocalityName': 'микрорайон Адмиралтейская Слобода',
+                            'Thoroughfare': {
+                              'ThoroughfareName': 'Большая улица',
+                              'Premise': {
+                                'PremiseNumber': '56'
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            'description': 'микрорайон Адмиралтейская Слобода, Казань, Республика Татарстан, Россия',
+            'name': 'Большая улица, 56',
+            'boundedBy': {
+              'Envelope': {
+                'lowerCorner': '49.056836 55.794396',
+                'upperCorner': '49.065047 55.799021'
+              }
+            },
+            'Point': {
+              'pos': '49.060941 55.796709'
+            }
+          }
+        }
+      ]
+    }
+  }
+}

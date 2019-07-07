@@ -1,12 +1,18 @@
+import csv
+import io
+import os
+
 from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
 
 from datetime import datetime
 
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, PhotoUploadForm, PhotoEditForm, TrailUploadForm, PhotoDeleteForm
+from app.forms import LoginForm, RegistrationForm, PhotoUploadForm, PhotoEditForm, TrailUploadForm, PhotoDeleteForm, \
+    AddCountryForm
 from app.exif import get_exif_data, get_exif_location, create_thumbnail, get_exif_datetime, get_exif_orientation
 from app.geocoder import get_area_name, get_json_from_yandex, check_country, get_country_name
+from app.import_country_data import areas_csv_import
 from app.models import User, Trail, Photo
 
 import os
@@ -25,7 +31,12 @@ photos = []
 @app.route('/index')
 def index():
     trails = Trail.query.all()
-    return render_template('index.html', title='Главная', trails=trails)
+    areas = []
+    for trail in trails:
+        for photo in trail.photos:
+            areas.append(photo.area)
+    areas = list(set(areas))
+    return render_template('index.html', title='Главная', trails=trails, areas=areas)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -83,6 +94,23 @@ def register():
 #     path = os.path.join(app.config['IMAGE_DIR'], photo_name)  # TODO: это можно переместить в config?
 #     photo.save(path)  # TODO: загрузка нескольких файлов сразу
 #     return redirect(url_for('create'))
+
+
+
+@app.route('/admin', methods=['GET', 'POST'])
+@login_required
+def admin():
+    form = AddCountryForm()
+
+    if form.file.data:
+        stream = form.file.data.read().decode('utf-8').splitlines()
+        csv_import = csv.reader(stream, delimiter=';')
+        areas = {str(area[0]): str(area[1]) for area in csv_import}
+        return render_template('add_country.html', form=form, areas=areas)
+
+    return render_template('add_country.html', form=form)
+
+
 
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -168,6 +196,23 @@ def delete_photo(photo_id):
     return redirect(url_for('upload'))
 
 
+@app.route('/<photo_id>/delete', methods=['POST'])
+@login_required
+def del_photo(photo_id):
+
+    global photos
+    result = []
+    for photo in photos:
+        if photo.uuid == photo_id:
+            photo.deleted = True
+        #  Если не хотим добавлять в БД фотографии, удалённые на стадии загрузки
+        else:
+            result.append(photo)
+        photos = result
+
+    return redirect(url_for('user'))
+
+
     # @app.route('/user/<photo_id>/remove', methods=['POST'])
     # def delete_photo(photo_id):
     #     global photos
@@ -187,14 +232,11 @@ def delete_photo(photo_id):
 
 
 
-
 @app.route('/user/<photo_id>/edit', methods=['GET', 'POST'])
 @login_required
 def photo_edit(photo_id):
     edit = PhotoEditForm()
     return render_template('photo_edit.html')
-
-
 
 
 @app.route('/save', methods=['GET', 'POST'])
@@ -233,16 +275,24 @@ def save_trail():
 @app.route('/user/<username>')
 @login_required
 def user(username):
+
+    delete = PhotoEditForm()
+
     photos = []
     user = User.query.filter_by(username=username).first_or_404()
     trails = Trail.query.filter_by(user_id=user.id)
+    areas = []
+    for trail in trails:
+        for photo in trail.photos:
+            areas.append(photo.area)
+    areas = list(set(areas))
     # Photo.query.filter_by(trail_id=trails.id)
 
     # Post.query.join(
     #     followers, (followers.c.followed_id == Post.user_id)).filter(
     #     followers.c.follower_id == self.id).order_by(
     #     Post.timestamp.desc())
-    return render_template('user.html', user=user, trails=trails, photos=photos)
+    return render_template('user.html', user=user, trails=trails, photos=photos, areas=areas, delete=delete)
 
 
 # @app.route('/create')

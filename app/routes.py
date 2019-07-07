@@ -9,11 +9,10 @@ from datetime import datetime
 
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, PhotoUploadForm, PhotoEditForm, TrailUploadForm, PhotoDeleteForm, \
-    AddCountryForm
+    AddCountryForm, ImportAreasForm
 from app.exif import get_exif_data, get_exif_location, create_thumbnail, get_exif_datetime, get_exif_orientation
 from app.geocoder import get_area_name, get_json_from_yandex, check_country, get_country_name
-from app.import_country_data import areas_csv_import
-from app.models import User, Trail, Photo
+from app.models import User, Trail, Photo, Country, Area
 
 import os
 from uuid import uuid4
@@ -25,6 +24,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 # from phototrail import app
 
 photos = []
+areas = []
 
 
 @app.route('/')
@@ -100,15 +100,29 @@ def register():
 @app.route('/admin', methods=['GET', 'POST'])
 @login_required
 def admin():
+
+    global areas
+    areas_import = ImportAreasForm()
     form = AddCountryForm()
 
-    if form.file.data:
-        stream = form.file.data.read().decode('utf-8').splitlines()
+    if areas_import.file.data:
+        stream = areas_import.file.data.read().decode('utf-8-sig').splitlines()
         csv_import = csv.reader(stream, delimiter=';')
         areas = {str(area[0]): str(area[1]) for area in csv_import}
-        return render_template('add_country.html', form=form, areas=areas)
+        return render_template('add_country.html', areas_import=areas_import, form=form, areas=areas)
 
-    return render_template('add_country.html', form=form)
+    if form.submit.data and form.validate():
+        country = Country(name=form.name.data)
+        db.session.add(country)
+        db.session.commit()
+
+        for name, iso in areas.items():
+            area = Area(name=name, iso=iso, country_id=country.id)
+            db.session.add(area)
+            db.session.commit()
+
+
+    return render_template('add_country.html', areas_import=areas_import, form=form)
 
 
 

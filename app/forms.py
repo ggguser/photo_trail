@@ -34,7 +34,7 @@ class RegistrationForm(FlaskForm):
 class PhotoEditForm(FlaskForm):
     area = StringField('Username', validators=[DataRequired()])
     comment = TextAreaField('Описание', validators=[Length(min=0, max=140)])
-    delete = SubmitField('del')
+    delete = SubmitField('Удалить')
     save = SubmitField('Submit')
 
 
@@ -52,3 +52,14 @@ class TrailUploadForm(FlaskForm):
     private = BooleanField('Сделать фотографии приватным')
     comment = TextAreaField('Описание', validators=[Length(min=0, max=140)])
     submit = SubmitField('Сохранить эти фотографии')
+
+
+class AddCountryForm(FlaskForm):
+    name = StringField('Страна', validators=[DataRequired(message='Нужно указать название страны')])
+    submit = SubmitField('Добавить страну')
+
+
+class ImportAreasForm(FlaskForm):
+    file = FileField(validators=[FileRequired(message='Нужно вложить файл!'),
+                                 FileAllowed(['csv'], 'Импортировать можно только csv')])
+    upload = SubmitField('Импортировать')

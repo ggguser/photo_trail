@@ -9,14 +9,14 @@
 
         <div class="form-group col-md-5">
 
-            {% for error in form.file.errors %}
+            {% for error in areas_import.file.errors %}
                 <div class="alert alert-warning">
                     {{ error }}
                 </div>
             {% endfor %}
 
-            {{ form.hidden_tag() }}
-            <div>{{ form.file }} {{ form.import_country }}</div>
+            {{ areas_import.hidden_tag() }}
+            <div>{{ areas_import.file }} {{ areas_import.upload }}</div>
 
         </div>
 
@@ -31,8 +31,8 @@
 
 
                 <p>
-                    <div>{{ form.country.label }}</div>
-                    <div>{{ form.country }} </div>
+                    <div>{{ form.name.label }}</div>
+                    <div>{{ form.name }} </div>
                     <div>{{ form.submit() }}</div>
 
                 </p>

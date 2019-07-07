@@ -1,6 +1,7 @@
 # Project Specific
 
 *.sqlite
+migrations/
 
 # PyCharm
 .idea/

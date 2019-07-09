@@ -13,6 +13,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     trails = db.relationship('Trail', backref='author', lazy='dynamic')
+    countries = db.relationship('Country', backref='imported_by', lazy='dynamic')
 
     def __repr__(self):
         return f'{self.id}: {self.username}'
@@ -55,7 +56,7 @@ class Photo(db.Model):
     area = db.Column(db.String(140))
     city = db.Column(db.String(140))
     # area_id = db.Column(db.Integer, db.ForeignKey('area.id'))  # TODO: на будущее, когда будет таблица с регионами
-    datetime = db.Column(db.String(20))  # TODO: решить, как работать с датой и временем
+    datetime = db.Column(db.String(20))
     lng = db.Column(db.Float)
     lat = db.Column(db.Float)
     # timestamp = db.Column(db.DateTime)
@@ -72,6 +73,7 @@ class Country(db.Model):
     iso = db.Column(db.String(10))
     areas = db.relationship('Area', backref='country', lazy='dynamic')
     areas_count = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
         return f'{self.name}'

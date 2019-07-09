@@ -27,7 +27,9 @@
         <div class="card-body">
             {# Перед тем как отображать проверка, что нет ошибок, есть дата и регион #}
             {% if photo.error == 'unsupported_country' %}
-                <p class="btn-warning">{{ photo.country }} пока не поддерживается.</p>
+                <p class="btn-warning">{{ photo.country }} пока не поддерживается,
+                но вы можете её
+                    <a href="{{ url_for('import_country') }}">добавить</a></p>
             {% elif photo.error == 'no_coordinates' %}
                 <p class="btn-warning">Это фото без координат!</p>
              {% elif photo.area and photo.country %}

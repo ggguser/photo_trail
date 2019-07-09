@@ -111,7 +111,7 @@ def import_country():
         stream = areas_import.file.data.read().decode('utf-8-sig').splitlines()
         csv_import = csv.reader(stream, delimiter=';')
         areas = {str(area[0]): str(area[1]) for area in csv_import}
-        return render_template('add_country.html', areas_import=areas_import, form=form, areas=areas, countries=countries)
+        return render_template('import_country.html', areas_import=areas_import, form=form, areas=areas, countries=countries)
 
     if form.submit.data and form.validate():
         areas_count = len(areas)
@@ -121,7 +121,7 @@ def import_country():
         if existing_country:
             Area.query.filter_by(country_id=existing_country.id).delete()
             db.session.delete(existing_country)
-        country = Country(name=name, iso=iso, areas_count=areas_count)
+        country = Country(name=name, iso=iso, areas_count=areas_count, imported_by=current_user)
         db.session.add(country)
         db.session.commit()
 
@@ -132,7 +132,7 @@ def import_country():
 
         return redirect(url_for('import_country'))
 
-    return render_template('add_country.html', areas_import=areas_import, form=form, countries=countries)
+    return render_template('import_country.html', areas_import=areas_import, form=form, countries=countries)
 
 
 

@@ -14,20 +14,20 @@
 
 
     {% if title %}
-      <title>{{ title }} - Photo Trail</title>
-      {% else %}
-      <title>Welcome to Photo Trail</title>
-      {% endif %}
+        <title>{{ title }} - Photo Trail</title>
+    {% else %}
+        <title>Welcome to Photo Trail</title>
+    {% endif %}
 
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-      <a class="navbar-brand" href="{{ url_for('index') }}">Photo Trail</a>
+    <nav class="navbar-custom navbar-expand-md fixed-top" role="navigation">
 
 
-      <div class="collapse navbar-collapse">
-        <ul class="navbar-nav mr-auto">
+        <div class="collapse navbar-collapse">
+            <a class="navbar-brand" href="{{ url_for('index') }}">Photo Trail</a>
+            <ul class="navbar-nav mr-auto">
           {% if current_user.is_authenticated %}
             <li class="nav-item active">
               <a class="nav-link" href="{{ url_for('user', username=current_user.username) }}">Профиль</a>
@@ -46,16 +46,6 @@
     </nav>
 
 
-{#    <div>Photo Trail:#}
-{#        <a href="{{ url_for('index') }}">Home</a>#}
-{#        {% if current_user.is_authenticated %}#}
-{#            <a href="{{ url_for('logout') }}">Logout</a>#}
-{#            <a href="{{ url_for('user', username=current_user.username) }}">Profile</a>#}
-{#            <a href="{{ url_for('create') }}">Create Trail</a>#}
-{#        {% else %}#}
-{#            <a href="{{ url_for('login') }}">Login</a>#}
-{#        {% endif %}#}
-{#    </div>#}
     <hr>
     {% with messages = get_flashed_messages() %}
     {% if messages %}

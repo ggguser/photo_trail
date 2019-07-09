@@ -63,3 +63,23 @@ footer p {
 
 .img-thumbnail {
 }
+
+.navbar-custom {
+    background-color: #4b65cc;
+    border-color: #AA0000;
+    border-radius: 0;
+}
+
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-brand a:hover,
+.navbar-custom .navbar-brand:focus {
+    color: #FFF;
+}
+
+.navbar-custom .navbar-nav li a {
+   color: #fff;
+ }
+
+.navbar-custom .navbar-nav a:hover {
+ color: grey;
+}

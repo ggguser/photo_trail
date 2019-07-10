@@ -49,13 +49,15 @@ class Photo(db.Model):
     filename = db.Column(db.String(40))
     original_filename = db.Column(db.String(50))
     thumbnail = db.Column(db.String(50))
-    # rotation = db.Column(db.Integer)
+    # rotation = db.Column(db.Integer)  # TODO: если пользователь хочет повернуть не так как в EFIF
     comment = db.Column(db.String(140))
     error = db.Column(db.String(140), default=None)
+    country_iso = db.Column(db.String(4), default=None)
+    country_id = db.Column(db.Integer, db.ForeignKey('country.id'), default=None)
+    area_id = db.Column(db.Integer, db.ForeignKey('area.id'), default=None)
     country = db.Column(db.String(140))
     area = db.Column(db.String(140))
     city = db.Column(db.String(140))
-    # area_id = db.Column(db.Integer, db.ForeignKey('area.id'))  # TODO: на будущее, когда будет таблица с регионами
     datetime = db.Column(db.String(20))
     lng = db.Column(db.Float)
     lat = db.Column(db.Float)
@@ -74,6 +76,7 @@ class Country(db.Model):
     areas = db.relationship('Area', backref='country', lazy='dynamic')
     areas_count = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    # photos = db.relationship('photo', backref='country', lazy='dynamic')
 
     def __repr__(self):
         return f'{self.name}'
@@ -87,6 +90,8 @@ class Area(db.Model):
     name = db.Column(db.String(140))
     iso = db.Column(db.String(10))
     country_id = db.Column(db.Integer, db.ForeignKey('country.id'))
+    # photos = db.relationship('Photo', backref='area', lazy='dynamic')
+
 
 
 @login.user_loader

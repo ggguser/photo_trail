@@ -38,6 +38,15 @@ def get_country_name(geocoder_info):
     return country_name
 
 
+def get_country_code(geocoder_info):
+    try:
+        country_code = geocoder_info['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']\
+        ['metaDataProperty']['GeocoderMetaData']['Address']['country_code']
+    except KeyError:
+        return None
+    return country_code
+
+
 def get_area_name(geocoder_info):
     try:
         area_name = geocoder_info['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['metaDataProperty']\
@@ -62,5 +71,13 @@ def check_country(country_name):
         if country_name == country.name:
             return True
     return False
+
+
+def check_country_code(country_code):
+    supported_countries = Country.query.all()
+    for country in supported_countries:
+        if country_code == country.iso:
+            return country
+    return None
 
 

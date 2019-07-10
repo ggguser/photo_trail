@@ -11,7 +11,7 @@ from app import app, db
 from app.forms import LoginForm, RegistrationForm, PhotoUploadForm, PhotoEditForm, TrailUploadForm, PhotoDeleteForm, \
     AddCountryForm, ImportAreasForm
 from app.exif import get_exif_data, get_exif_location, create_thumbnail, get_exif_datetime, get_exif_orientation
-from app.geocoder import get_area_name, get_json_from_yandex, check_country, get_country_name
+from app.geocoder import get_area_name, get_json_from_yandex, check_country, get_country_name, get_country_code
 from app.models import User, Trail, Photo, Country, Area
 
 import os
@@ -22,6 +22,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 
 
 # from phototrail import app
+from app.search import search_area_db
 
 photos = []
 areas = []
@@ -169,11 +170,20 @@ def upload():
 
         else:
             geocoder_info = get_json_from_yandex(f'{photo.lng},{photo.lat}')
-            photo.country = get_country_name(geocoder_info)
-            photo.area = get_area_name(geocoder_info)
+            photo.country_iso = get_country_code(geocoder_info)
+            country = Country.query.filter_by(iso=photo.country_iso).first()
 
-            if not check_country(photo.country):
+            if not country:
                 photo.error = 'unsupported_country'
+            else:
+                photo.country_id = country.id
+                photo.country = country.name
+                geocoder_area_name = get_area_name(geocoder_info)
+                area_id = search_area_db(country.areas, geocoder_area_name)
+                area = Area.query.filter_by(id=area_id).first()
+                photo.area_id = area_id
+                photo.area = area.name
+
 
         rotation = get_exif_orientation(exif_data)
         create_thumbnail(photo_path, thumbnail_path, size, rotation)

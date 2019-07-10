@@ -22,7 +22,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 
 
 # from phototrail import app
-from app.search import search_area_db
+from app.search import search_area_db, get_area_id
 
 photos = []
 areas = []
@@ -175,15 +175,15 @@ def upload():
 
             if not country:
                 photo.error = 'unsupported_country'
+                photo.country = get_country_name(geocoder_info)
             else:
                 photo.country_id = country.id
                 photo.country = country.name
                 geocoder_area_name = get_area_name(geocoder_info)
-                area_id = search_area_db(country.areas, geocoder_area_name)
+                area_id = get_area_id(country.areas, geocoder_area_name)
                 area = Area.query.filter_by(id=area_id).first()
-                photo.area_id = area_id
+                photo.area_id = area.id
                 photo.area = area.name
-
 
         rotation = get_exif_orientation(exif_data)
         create_thumbnail(photo_path, thumbnail_path, size, rotation)

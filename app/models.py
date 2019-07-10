@@ -56,8 +56,8 @@ class Photo(db.Model):
     country_id = db.Column(db.Integer, db.ForeignKey('country.id'), default=None)
     area_id = db.Column(db.Integer, db.ForeignKey('area.id'), default=None)
     country = db.Column(db.String(140))
-    area = db.Column(db.String(140))
-    city = db.Column(db.String(140))
+    area = db.Column(db.String(140), default=None)
+    # city = db.Column(db.String(140))  # TODO: пока только с регионами работаем
     datetime = db.Column(db.String(20))
     lng = db.Column(db.Float)
     lat = db.Column(db.Float)

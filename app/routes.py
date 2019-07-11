@@ -22,7 +22,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 
 
 # from phototrail import app
-from app.search import search_area_db, get_area_id
+from app.search import get_area_id
 
 photos = []
 areas = []
@@ -80,24 +80,6 @@ def register():
     return render_template('register.html', title='Registration', form=form)
 
 
-# @app.route('/upload', methods=['POST'])
-# @login_required
-# def upload():
-#     photos = []
-
-#     if 'photo' not in request.files:
-#         redirect(url_for('index'))
-#
-#     photo = request.files['photo']
-#     photo_name = str(uuid.uuid4())
-#     photos.append(photo_name)
-#     trails.append(photos)
-#     path = os.path.join(app.config['IMAGE_DIR'], photo_name)  # TODO: это можно переместить в config?
-#     photo.save(path)  # TODO: загрузка нескольких файлов сразу
-#     return redirect(url_for('create'))
-
-
-
 @app.route('/import', methods=['GET', 'POST'])
 @login_required
 def import_country():
@@ -111,8 +93,9 @@ def import_country():
     if areas_import.file.data:
         stream = areas_import.file.data.read().decode('utf-8-sig').splitlines()
         csv_import = csv.reader(stream, delimiter=';')
-        areas = {str(area[0]): str(area[1]) for area in csv_import}
-        return render_template('import_country.html', areas_import=areas_import, form=form, areas=areas, countries=countries)
+        areas = [(str(area[0]), str(area[1])) for area in csv_import]
+        return render_template('import_country.html', areas_import=areas_import, form=form,
+                               areas=areas, countries=countries)
 
     if form.submit.data and form.validate():
         areas_count = len(areas)
@@ -126,7 +109,7 @@ def import_country():
         db.session.add(country)
         db.session.commit()
 
-        for name, iso in areas.items():
+        for (name, iso) in areas:
             area = Area(name=name, iso=iso, country_id=country.id)
             db.session.add(area)
             db.session.commit()
@@ -134,8 +117,6 @@ def import_country():
         return redirect(url_for('import_country'))
 
     return render_template('import_country.html', areas_import=areas_import, form=form, countries=countries)
-
-
 
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -183,6 +164,7 @@ def upload():
                 area_id = get_area_id(country.areas, geocoder_area_name)
                 area = Area.query.filter_by(id=area_id).first()
                 photo.area_id = area.id
+                photo.area_iso = area.iso
                 photo.area = area.name
 
         rotation = get_exif_orientation(exif_data)
@@ -312,14 +294,16 @@ def user(username):
 
     delete = PhotoEditForm()
 
-    photos = []
     user = User.query.filter_by(username=username).first_or_404()
     trails = Trail.query.filter_by(user_id=user.id)
     areas = []
+    countries = []
     for trail in trails:
         for photo in trail.photos:
             areas.append(photo.area)
+            countries.append(photo.area)
     areas = list(set(areas))
+    countries = list(set(countries))
 
     # Photo.query.filter_by(trail_id=trails.id)
 
@@ -327,7 +311,7 @@ def user(username):
     #     followers, (followers.c.followed_id == Post.user_id)).filter(
     #     followers.c.follower_id == self.id).order_by(
     #     Post.timestamp.desc())
-    return render_template('user.html', user=user, trails=trails, photos=photos, areas=areas, delete=delete)
+    return render_template('user.html', user=user, trails=trails, photos=photos, areas=areas, countries=countries, delete=delete)
 
 
 # @app.route('/create')

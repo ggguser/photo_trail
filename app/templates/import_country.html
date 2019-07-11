@@ -5,7 +5,8 @@
 
 {% if current_user.is_authenticated %}
 
-
+<div class="container">
+    <div class="col-6 offset-3">
     <ul class="list-group">
     {% for country in countries %}
 
@@ -19,42 +20,52 @@
         </li>
     {% endfor %}
     </ul>
+    </div>
+</div>
+
+    <br>
+
+    <div class="container">
+        <div class="jumbotron col-6 offset-3">
 
 
-    <form method="post" enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data" class="form-group">
 
-        <div class="form-group col-md-5">
+                {% for error in areas_import.file.errors %}
+                    <div class="alert alert-warning">
+                        {{ error }}
+                    </div>
+                {% endfor %}
 
-            {% for error in areas_import.file.errors %}
-                <div class="alert alert-warning">
-                    {{ error }}
-                </div>
-            {% endfor %}
+                {{ areas_import.hidden_tag() }}
+                <div>{{ areas_import.file }} {{ areas_import.upload }}</div>
 
-            {{ areas_import.hidden_tag() }}
-            <div>{{ areas_import.file }} {{ areas_import.upload }}</div>
-
+            </form>
         </div>
-
-    </form>
+    </div>
 
 
     {% if areas %}
+    <div class="container">
+        <div class="jumbotron col-6 offset-3 form-group row">
 
-        <form action="" method="post">
-            <div class="form-group col-md-5">
+        <form action="" method="post" class="form-group">
                 {{ form.hidden_tag() }}
 
+  <div class="input-group-prepend">
+    {{ form.name(size=30, placeholder="Название") }} {{ form.iso(size=4, placeholder="ISO") }}
 
-                <p>
-                    <div>{{ form.name.label }}</div>
-                    <div>{{ form.name }} {{ form.iso }}</div>
-                    <div>{{ form.submit() }}</div>
+ {{ form.submit(class="btn btn-primary") }}
 
-                </p>
-            </div>
+  </div>
+
         </form>
+  </div>
 
+                    </div>
+            </div>
+
+<div class="container w-75">
         <table class="table table-bordered table-sm table-striped">
             <thead>
             <tr>
@@ -71,7 +82,7 @@
             {% endfor %}
             </tbody>
         </table>
-
+</div>
     {% endif %}
 
 

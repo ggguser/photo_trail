@@ -136,34 +136,29 @@ def upload():
         photo_path = os.path.join(app.config['IMAGE_DIR'], photo.filename())
         thumbnail_path = os.path.join(app.config['IMAGE_DIR'], photo.thumbnail())
         form.photo.data.save(photo_path)
-
-        photo.original_filename = form.photo.data.filename[:50]
+        photo.original_filename = secure_filename(form.photo.data.filename)
 
         exif_data = get_exif_data(photo_path)
         photo.datetime = get_exif_datetime(exif_data)
         photo.lat, photo.lng = get_exif_location(exif_data)
-        photo.error = None
+        photo.unsupported_country = None
 
-        if not photo.lat or not photo.lng:
-            photo.error = 'no_coordinates'
+        if photo.lat and photo.lng:
 
-        else:
             geocoder_info = get_json_from_yandex(f'{photo.lng},{photo.lat}')
             photo.country_iso = get_country_code(geocoder_info)
             country = Country.query.filter_by(iso=photo.country_iso).first()
 
-            if not country:
-                photo.error = 'unsupported_country'
-                # photo.country = get_country_name(geocoder_info)
-            else:
+            if country:
                 photo.country_id = country.id
-                # photo.country = country.name
                 geocoder_area_name = get_area_name(geocoder_info)
                 area_id = get_area_id(country.areas, geocoder_area_name)
                 area = Area.query.filter_by(id=area_id).first()
                 photo.area_id = area.id
-                # photo.area_iso = area.iso
-                # photo.area = area.name
+                db.session.add(photo)
+                db.session.commit()
+            else:
+                photo.unsupported_country = get_country_name(geocoder_info)
 
         rotation = get_exif_orientation(exif_data)
         create_thumbnail(photo_path, thumbnail_path, size, rotation)
@@ -358,7 +353,6 @@ def user(username):
 def country(country_iso):
     country_iso = country_iso.upper()
     country = Country.query.filter_by(iso=country_iso).first_or_404()
-    # areas = country.areas.all()
     return render_template('country.html', country=country)
 
 

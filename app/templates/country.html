@@ -2,12 +2,37 @@
 
 {% block content %}
 
+{#    <div class="row">#}
 
-    <div class="container w-75">
+    <h1></h1>
+{#    </div>#}
+
+    <div class="container col-6">
         <table class="table table-bordered table-sm table-striped">
             <thead>
             <tr>
-                <th scope="col">Название</th>
+                <th scope="col">
+
+                    <div class="media w-75">
+                        <img class="mr-3 shadow p-0 "
+                             src="{{ url_for('static', filename='flags/' + country.iso + '.png') }}"
+                             alt="Flag of{{ country.name }}"
+                            width="100">
+                        <div class="media-body">
+                            <h5 class="mt-0">{{ country.name }}</h5>
+                            {{ country.areas_count }}
+                            {# TODO: Описания стран вставить #}
+                        </div>
+                    </div>
+
+
+
+{#                    <div class = "title">#}
+{#                    <img src="{{ url_for('static', filename='flags/' + country.iso + '.png') }}" width="100" class="img-thumbnail">#}
+{#                    <h1>{{ country.name }}</h1>#}
+{#                    </div>#}
+                </th>
+
             </tr>
             </thead>
             <tbody>

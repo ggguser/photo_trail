@@ -25,8 +25,20 @@
 
     <br>
 
+    {% if areas_import %}
     <div class="container">
         <div class="jumbotron col-6 offset-3">
+
+        <h1 class="display-5">Привет, путешественник!</h1>
+  <p class="lead">Помоги нам наполнить сайт информацией о странах.</p>
+  <hr class="my-3">
+  <p>
+      Для этого нужно подготовить файл в формате CSV с двумя колонками: название и код региона по ISO.
+      Эту информацию легко найти на Википедии, например вот
+      <a href="https://ru.wikipedia.org/wiki/ISO_3166-2:PT">Португалия</a>
+      , а вот
+      <a href="{{ url_for('static', filename='example/' + 'Portugal.csv') }}">пример файла</a>.
+  </p>
 
 
             <form method="post" enctype="multipart/form-data" class="form-group">
@@ -43,11 +55,16 @@
             </form>
         </div>
     </div>
+        {% endif %}
 
 
-    {% if areas %}
+    {% if form %}
     <div class="container">
         <div class="jumbotron col-6 offset-3 form-group row">
+
+            <h3 class="display-5">Отлично, почти готово!</h3>
+            <p class="lead">Теперь заполни название страны и её код по ISO</p>
+            <hr class="my-3">
 
         <form action="" method="post" class="form-group">
                 {{ form.hidden_tag() }}

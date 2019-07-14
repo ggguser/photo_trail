@@ -89,12 +89,11 @@ def import_country():
     form = AddCountryForm()
 
     countries = Country.query.all()
-
-    if areas_import.file.data:
+    if areas_import.file.data and areas_import.validate():
         stream = areas_import.file.data.read().decode('utf-8-sig').splitlines()
         csv_import = csv.reader(stream, delimiter=';')
         areas = [(str(area[0]), str(area[1])) for area in csv_import]
-        return render_template('import_country.html', areas_import=areas_import, form=form,
+        return render_template('import_country.html', areas_import=None, form=form,
                                areas=areas, countries=countries)
 
     if form.submit.data and form.validate():
@@ -116,7 +115,7 @@ def import_country():
 
         return redirect(url_for('import_country'))
 
-    return render_template('import_country.html', areas_import=areas_import, form=form, countries=countries)
+    return render_template('import_country.html', areas_import=areas_import, form=None, countries=countries)
 
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -185,6 +184,7 @@ def upload():
         for photo in photos:
             photo.trail_id = trail.id
             photo.author = current_user
+            photo.private = save.private.data
             db.session.add(photo)
             db.session.commit()
 

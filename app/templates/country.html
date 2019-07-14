@@ -13,7 +13,7 @@
             <tbody>
             {% for area in country.areas %}
                 <tr>
-                    <td><a href="{{ area.iso }}">{{ area.name }}</a></td>
+                    <td><a href="{{ url_for('area', country_iso=area.country.iso, area_iso=area.iso) }}">{{ area.name }}</a></td>
                 </tr>
             {% endfor %}
             </tbody>

@@ -2,10 +2,6 @@
 
 {% block content %}
 
-{#    <div class="row">#}
-
-    <h1></h1>
-{#    </div>#}
 
     <div class="container col-6">
         <table class="table table-bordered table-sm table-striped">
@@ -21,16 +17,10 @@
                         <div class="media-body">
                             <h5 class="mt-0">{{ country.name }}</h5>
                             {{ country.areas_count }}
-                            {# TODO: Описания стран вставить #}
+                            {# TODO: Описания страны вставить #}
                         </div>
                     </div>
 
-
-
-{#                    <div class = "title">#}
-{#                    <img src="{{ url_for('static', filename='flags/' + country.iso + '.png') }}" width="100" class="img-thumbnail">#}
-{#                    <h1>{{ country.name }}</h1>#}
-{#                    </div>#}
                 </th>
 
             </tr>

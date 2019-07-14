@@ -3,70 +3,89 @@
 {% block content %}
 
 
-{% if current_user.is_authenticated %}
 
 
-    <form method="post" enctype="multipart/form-data">
-
-        <div class="form-group col-md-5">
-
-            {% for error in form.photo.errors %}
-                <div class="alert alert-warning">
-                    {{ error }}
-                </div>
-            {% endfor %}
-
-            {{ form.hidden_tag() }}
-            <div>{{ form.photo }} {{ form.upload }}</div>
-
-        </div>
-
-    </form>
-
-
-    <div class="album py-1 bg-light">
+    {% if current_user.is_authenticated %}
         <div class="container">
-            <div class="row">
+            <div class="jumbotron col-6 offset-3 h-25">
 
-                {% for photo in photos if not photo.deleted %}
-
-                        {% include '_photo_card.html' %}
-
-                {% endfor %}
-
-            </div>
-        </div>
-    </div>
-
-
-
-{#    {% if photos|selectattr("deleted", 0) %}#}
-
-{#        {% for photo in photos|rejectattr("deleted", 1) %}#}
-{#            {%- if loop.index >= 1 %}{% break %}{% endif %}#}
-{#        {%- endfor %}#}
-
-{#    {% if not photos|rejectattr("deleted") %}#}
-    {% if photos %}
-        <form action="" method="post">
-            <div class="form-group col-md-5">
-                {{ save.hidden_tag() }}
-
-
+                <h4 class="display-5">Привет, {{ current_user.username }}</h4>
+                <hr class="my-3">
                 <p>
-                    <div>{{ save.comment.label }}</div>
-                    <div>{{ save.comment(cols=32, rows=4) }} </div>
+                    Здесь ты можешь загрузить свои фотографии, а мы распознаем их геометки.
+                </p>
+
+
+                <form method="post" enctype="multipart/form-data" class="form-group">
+
+
+                        {% for error in form.photo.errors %}
+                            <div class="alert alert-warning">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+
+                        {{ form.hidden_tag() }}
+                        <div>{{ form.photo }} {{ form.upload }}</div>
+
+
+                </form>
+
+                    {% if photos %}
+            <form action="" method="post">
+                <div class="form-group">
+                    {{ save.hidden_tag() }}
+
+
+
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">{{ save.comment.label }}</span>
+
+                  {{ save.comment(class="form-control") }} </div>
+
                     <div>{{ save.private }} {{ save.private.label }}</div>
                     <div>{{ save.submit() }}</div>
 
-                </p>
+
+                </div>
+            </form>
+        {% endif %}
+
+
+
             </div>
-        </form>
+        </div>
+
+
+
+
+
+
+
+
+
+        <div class="album py-1 bg-light">
+            <div class="container">
+                <div class="row">
+
+                    {% for photo in photos if not photo.deleted %}
+
+                        {% include '_photo_card.html' %}
+
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+    {% else %}
+        <a href="{{ url_for('login') }}">Войдите</a>, пожалуйста!
     {% endif %}
-
-
-{% else %}
-    <a href="{{ url_for('login') }}">Войдите</a>, пожалуйста!
-{% endif %}
 
 {% endblock content %}

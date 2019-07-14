@@ -62,6 +62,8 @@ footer p {
 }
 
 .img-thumbnail {
+    width: auto;
+
 }
 
 .navbar-custom {
@@ -83,3 +85,5 @@ footer p {
 .navbar-custom .navbar-nav a:hover {
  color: grey;
 }
+
+

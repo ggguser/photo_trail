@@ -13,28 +13,31 @@
 
 
 
-<div class="col-md-3">
-    <div class="card mb-2 shadow-sm align-items-center">
+<div class="col-md-2">
+    <div class="card mb-2 shadow-sm " >
         {% if photo.datetime %}
             <div class="card-text small">{{ photo.datetime|string }}</div>
         {% else %}
             <div class="small text-warning">нет даты</div>
         {% endif %}
 
-        <img src="{{ url_for('static', filename='photos/' + photo.thumbnail) }}"
+        <img src="{{ url_for('static', filename='photos/' + photo.thumbnail()) }}"
              class="img-thumbnail" alt="..."
              width="200">
         <div class="card-body">
             {# Перед тем как отображать проверка, что нет ошибок, есть дата и регион #}
-            {% if photo.error == 'unsupported_country' %}
-                <p class="btn-warning">{{ photo.country }} пока не поддерживается,
-                но вы можете её
+            {% if photo.unsupported_country %}
+                <p class="btn-warning">{{ photo.unsupported_country }} ещё не поддерживается,
+                можете
                     <a href="{{ url_for('import_country') }}">добавить</a></p>
-            {% elif photo.error == 'no_coordinates' %}
+            {% elif not photo.lat or not photo.lng %}
                 <p class="btn-warning">Это фото без координат!</p>
-             {% elif photo.area and photo.country %}
-                <div class="card-text">{{ photo.country }}</div>
-                <div class="card-text small">{{ photo.area }}</div>
+            {% endif %}
+
+
+             {% if photo.area.name and photo.country.name %}
+                <div class="card-text">{{ photo.country.name }}</div>
+                <div class="card-text small">{{ photo.area.name }}</div>
             {% endif %}
 
             <div><small class="text-muted">{{ photo.original_filename }}</small></div>
@@ -49,8 +52,6 @@
                     {{ delete.hidden_tag() }}
                     {{ delete.delete(class="btn btn-sm btn-outline-danger")}}
                 </form>
-
-
 
             </div>
         </div>

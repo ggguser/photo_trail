@@ -12,45 +12,54 @@
                 <h4 class="display-5">Привет, {{ current_user.username }}</h4>
                 <hr class="my-3">
                 <p>
-                    Здесь ты можешь загрузить свои фотографии, а мы распознаем их геометки.
+                    Здесь вы загружаете свои фотографии, а мы распознаем их геометки.
                 </p>
 
+                <form method="post" enctype="multipart/form-data" class="input-group">
 
-                <form method="post" enctype="multipart/form-data" class="form-group">
+                    {% for error in form.photo.errors %}
+                        <div class="alert alert-warning">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+
+                    {{ form.hidden_tag() }}
+                    <div class="custom-file">
+                        {{ form.photo(class="custom-file-input") }}
+                        <label class="custom-file-label">Фото в формате jpeg</label>
 
 
-                        {% for error in form.photo.errors %}
-                            <div class="alert alert-warning">
-                                {{ error }}
-                            </div>
-                        {% endfor %}
-
-                        {{ form.hidden_tag() }}
-                        <div>{{ form.photo }} {{ form.upload }}</div>
-
-
+                    </div>
+                    <div class="input-group-append">
+                        {{ form.upload(class="btn btn-outline-primary") }}
+                    </div>
                 </form>
 
-                    {% if photos %}
-            <form action="" method="post">
-                <div class="form-group">
-                    {{ save.hidden_tag() }}
+                {% if photos %}
+                    <br>
+
+                    <form action="" method="post">
+
+                        <div class="form-group">
+
+                            {{ save.hidden_tag() }}
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">{{ save.comment.label }}</span>
+                                {{ save.comment(class="form-control") }}
+                            </div>
+
+                            <div class="form-check">
+                                {{ save.private(class="form-check-input") }} {{ save.private.label(class="form-check-text") }}
+                            </div>
+                            <div>{{ save.submit(class="btn btn-primary") }}</div>
+                        </div>
 
 
 
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">{{ save.comment.label }}</span>
+                    </form>
 
-                  {{ save.comment(class="form-control") }} </div>
-
-                    <div>{{ save.private }} {{ save.private.label }}</div>
-                    <div>{{ save.submit() }}</div>
-
-
-                </div>
-            </form>
-        {% endif %}
-
+                {% endif %}
 
 
             </div>
@@ -64,7 +73,7 @@
 
 
 
-        <div class="album py-1 bg-light">
+        <div class="album py-2 bg-light">
             <div class="container">
                 <div class="row">
 

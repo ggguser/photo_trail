@@ -134,10 +134,8 @@ def upload():
         size = (400, 400)
 
         photo.uuid = str(uuid4())
-        photo.filename = secure_filename(photo.uuid + '.jpg')
-        photo.thumbnail = secure_filename(photo.uuid + '_thumbnail.jpg')
-        photo_path = os.path.join(app.config['IMAGE_DIR'], photo.filename)
-        thumbnail_path = os.path.join(app.config['IMAGE_DIR'], photo.thumbnail)
+        photo_path = os.path.join(app.config['IMAGE_DIR'], photo.filename())
+        thumbnail_path = os.path.join(app.config['IMAGE_DIR'], photo.thumbnail())
         form.photo.data.save(photo_path)
 
         photo.original_filename = form.photo.data.filename[:50]
@@ -145,6 +143,7 @@ def upload():
         exif_data = get_exif_data(photo_path)
         photo.datetime = get_exif_datetime(exif_data)
         photo.lat, photo.lng = get_exif_location(exif_data)
+        photo.error = None
 
         if not photo.lat or not photo.lng:
             photo.error = 'no_coordinates'
@@ -156,16 +155,16 @@ def upload():
 
             if not country:
                 photo.error = 'unsupported_country'
-                photo.country = get_country_name(geocoder_info)
+                # photo.country = get_country_name(geocoder_info)
             else:
                 photo.country_id = country.id
-                photo.country = country.name
+                # photo.country = country.name
                 geocoder_area_name = get_area_name(geocoder_info)
                 area_id = get_area_id(country.areas, geocoder_area_name)
                 area = Area.query.filter_by(id=area_id).first()
                 photo.area_id = area.id
-                photo.area_iso = area.iso
-                photo.area = area.name
+                # photo.area_iso = area.iso
+                # photo.area = area.name
 
         rotation = get_exif_orientation(exif_data)
         create_thumbnail(photo_path, thumbnail_path, size, rotation)
@@ -185,6 +184,7 @@ def upload():
 
         for photo in photos:
             photo.trail_id = trail.id
+            photo.author = current_user
             db.session.add(photo)
             db.session.commit()
 
@@ -295,15 +295,41 @@ def user(username):
     delete = PhotoEditForm()
 
     user = User.query.filter_by(username=username).first_or_404()
-    trails = Trail.query.filter_by(user_id=user.id)
-    areas = []
-    countries = []
+    trails = Trail.query.filter_by(author=user).all()
+    # areas_visited = Photo.query.filter_by(author=user).group_by(Photo.area_id).count()
+
+    countries_data = {x.name: x.areas_count for x in Country.query.all()}
+    # сбор всех регионов в одном словаре
+    # countries_data = {country.name: {area.name: 0 for area in country.areas.all()} for country in Country.query.all()}
+
+
+    countries_visited = {}
     for trail in trails:
         for photo in trail.photos:
-            areas.append(photo.area)
-            countries.append(photo.area)
-    areas = list(set(areas))
-    countries = list(set(countries))
+            if photo.country.name not in countries_visited:
+                countries_visited[photo.country.name] = [photo.area.name]
+            elif photo.area.name not in countries_visited[photo.country.name]:
+                countries_visited[photo.country.name].append(photo.area.name)
+    #
+    # country_areas = {}
+    # for trail in trails:
+    #     for photo in trail.photos:
+    #         country = Country.query.filter_by(iso=photo.country).first()
+    #         for area in country.areas:
+    #             country_areas[country.name] =
+    #         if photo.country not in countries_visited:
+    #             countries_visited[photo.country] = [photo.area]
+    #         elif photo.area not in countries_visited[photo.country]:
+    #             countries_visited[photo.country].append(photo.area)
+
+
+
+
+            # countries.append(photo.country)
+            # areas.append(photo.area)
+    # areas = list(set(areas))
+    # countries = list(set(countries))
+
 
     # Photo.query.filter_by(trail_id=trails.id)
 
@@ -311,7 +337,9 @@ def user(username):
     #     followers, (followers.c.followed_id == Post.user_id)).filter(
     #     followers.c.follower_id == self.id).order_by(
     #     Post.timestamp.desc())
-    return render_template('user.html', user=user, trails=trails, photos=photos, areas=areas, countries=countries, delete=delete)
+    return render_template('user.html', user=user, trails=trails, countries_visited=countries_visited, countries_data=countries_data)
+                           # , photos=photos, areas=areas,
+                           # countries=countries, delete=delete, countries_visited=countries_visited)
 
 
 # @app.route('/create')
@@ -323,5 +351,26 @@ def user(username):
 
 # if __name__ == '__main__':
 #     app.run(port=9873, debug=True)
+
+
+@app.route('/<country_iso>')
+@app.route('/<country_iso>/')
+def country(country_iso):
+    country_iso = country_iso.upper()
+    country = Country.query.filter_by(iso=country_iso).first_or_404()
+    # areas = country.areas.all()
+    return render_template('country.html', country=country)
+
+
+@app.route('/<country_iso>/<area_iso>')
+@app.route('/<country_iso>/<area_iso>/')
+def area(country_iso, area_iso):
+    country_iso = country_iso.upper()
+    area_iso = area_iso.upper()
+    area = Area.query.filter_by(iso=area_iso).first_or_404()
+    photos = Photo.query.filter_by(area=area).all()
+    return render_template('area.html', area=area, country_iso=country_iso, photos=photos)
+
+
 
 

@@ -8,8 +8,9 @@
 
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{ url_for('static', filename='gallery.css') }}">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+{#    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"#}
+{#          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">#}
 
 
 
@@ -21,7 +22,6 @@
 
 </head>
 <body>
-
     <nav class="navbar-custom navbar-expand-md fixed-top" role="navigation">
 
 
@@ -35,6 +35,9 @@
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('upload') }}">Загрузить фото</a>
             </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('import_country') }}">Список стран</a>
+              </li>
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('logout') }}">Выйти</a>
             </li>
@@ -44,7 +47,6 @@
         </ul>
       </div>
     </nav>
-
 
     <hr>
     {% with messages = get_flashed_messages() %}

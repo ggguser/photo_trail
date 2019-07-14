@@ -1,7 +1,7 @@
 # from app import create_app, db
 from app import app, db
 from app.models import User, Trail, Photo
-from app.routes import *
+from app import routes, models, errors
 
 # app = create_app()
 # db.drop_all(app=create_app())

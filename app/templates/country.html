@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+    <div class="container w-75">
+        <table class="table table-bordered table-sm table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Название</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for area in country.areas %}
+                <tr>
+                    <td><a href="{{ area.iso }}">{{ area.name }}</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+{% endblock %}

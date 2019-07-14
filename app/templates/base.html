@@ -8,7 +8,7 @@
 
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{ url_for('static', filename='gallery.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
 {#    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"#}
 {#          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">#}
 
@@ -22,11 +22,18 @@
 
 </head>
 <body>
-    <nav class="navbar-custom navbar-expand-md fixed-top" role="navigation">
 
+    <header>
+      <nav class="navbar navbar-expand-md navbar-custom fixed-top">
+        <a class="navbar-brand" href="{{ url_for('index') }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+            Photo Trail</a>
 
-        <div class="collapse navbar-collapse">
-            <a class="navbar-brand" href="{{ url_for('index') }}">Photo Trail</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+
             <ul class="navbar-nav mr-auto">
           {% if current_user.is_authenticated %}
             <li class="nav-item active">
@@ -45,8 +52,16 @@
              <a href="{{ url_for('login') }}">Войти</a>
           {% endif %}
         </ul>
-      </div>
-    </nav>
+
+          <form class="form-inline mt-2 mt-md-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Поиск" aria-label="Search">
+            <button class="btn btn-primary my-2 my-sm-0" type="submit">Поиск</button>
+          </form>
+        </div>
+      </nav>
+    </header>
+
+
 
     <hr>
     {% with messages = get_flashed_messages() %}

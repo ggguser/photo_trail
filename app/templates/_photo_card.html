@@ -27,11 +27,11 @@
         <div class="card-body shadow-lg">
             {# Перед тем как отображать проверка, что нет ошибок, есть дата и регион #}
             {% if photo.unsupported_country %}
-                <p class="btn-warning">{{ photo.unsupported_country }} ещё не поддерживается,
+                <p class="btn-warning small">{{ photo.unsupported_country }} ещё не поддерживается,
                 можете
                     <a href="{{ url_for('import_country') }}">добавить</a></p>
             {% elif not photo.lat or not photo.lng %}
-                <p class="btn-warning">Это фото без координат!</p>
+                <p class="btn-warning small">Это фото без координат!</p>
             {% endif %}
 
 

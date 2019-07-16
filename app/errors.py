@@ -7,6 +7,11 @@ def not_found_error(error):
     return render_template('404.html'), 404
 
 
+@app.errorhandler(401)
+def unauthorized_error(error):
+    return render_template('401.html'), 404
+
+
 @app.errorhandler(500)
 def internal_error(error):
     db.session.rollback()

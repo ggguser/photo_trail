@@ -3,13 +3,22 @@
 {% block content %}
 
 
-    <div class="container w-75">
+    <div class="container">
         <h1>{{ area }}</h1>
         <p><a href="{{ url_for('country', country_iso=country_iso) }}">Назад</a></p>
 
+    <div class="row">
+    <div class="col-4 offset-4">
         {% for photo in photos %}
-        <img src="{{ url_for('static', filename='photos/' + photo.thumbnail()) }}" alt=""width="200">
+            <a href="{{ url_for('static', filename='photos/' + photo.filename()) }}">
+        <img src="{{ url_for('static', filename='photos/' + photo.thumbnail()) }}"
+             class="card-img" alt="">
+            </a>
+            <br>
+            <br>
         {% endfor %}
+    </div>
+    </div>
     </div>
 
 

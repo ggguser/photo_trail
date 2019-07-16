@@ -9,8 +9,8 @@ from app.models import User
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
-    remember_me = BooleanField('Remember Me')
-    submit = SubmitField('Sign In')
+    remember_me = BooleanField('Запомните меня')
+    submit = SubmitField('Войти')
 
 
 class RegistrationForm(FlaskForm):
@@ -46,7 +46,7 @@ class PhotoUploadForm(FlaskForm):
 
 
 class PhotoDeleteForm(FlaskForm):
-    delete = SubmitField('X')
+    delete = SubmitField('x')
 
 
 class TrailUploadForm(FlaskForm):

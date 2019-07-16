@@ -1,28 +1,49 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <body class="text-center">
-    <form action="" method="post" novalidate class="form-signin">
-        <h1 class="h3 mb-3 font-weight-normal">Sign In</h1>
+    <div class="container">
+    <div class="row">
+    <div class="jumbotron col-6 offset-3 shadow">
+    <form action="" method="post" novalidate>
 
+
+        <h1 class="text-info">Вход</h1>
         {{ form.hidden_tag() }}
-        <p>
-            {{ form.username.label }}<br>
-            {{ form.username(size=32) }}
-            {% for error in form.username.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}        </p>
-        <p>
-            {{ form.password.label }}<br>
-            {{ form.password(size=32) }}
-            {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
-        <p>{{ form.submit() }}</p>
-    </form>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label">{{ form.username.label }}</label>
+            <div class="col-sm-7">
+                {{ form.username(class="form-control") }}
+                {% for error in form.username.errors %}
+                    <small class="form-text text-danger">{{ error }}</small>
+                {% endfor %}
+            </div>
+        </div>
 
-    <p>Впервые у нас? Тогда <a href="{{ url_for('register') }}">зарегистрируйтесь</a>, пожалуйста</p>
-    </body>
+
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label">{{ form.password.label }}</label>
+        <div class="col-sm-7">
+            {{ form.password(class="form-control") }}
+            {% for error in form.password.errors %}
+            <small class="form-text text-danger">{{ error }}</small>
+            {% endfor %}
+        </div>
+        </div>
+
+        <div class="form-group row">
+            <span class="col-sm-4 col-form-label"></span>
+            <div class="col-sm-7">
+                        {{ form.remember_me() }} {{ form.remember_me.label }}
+            </div>
+        </div>
+
+
+        <div>{{ form.submit(class="btn-lg btn-primary") }}</div>
+    </form>
+<br>
+    <p>Впервые у нас? <br>
+        Тогда <a href="{{ url_for('register') }}">зарегистрируйтесь</a>, пожалуйста</p>
+    </div>
+    </div>
+    </div>
 {% endblock %}

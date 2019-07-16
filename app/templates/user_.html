@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ user.username }}</h1><br>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: {{ 2/85*100 }}%;" aria-valuenow="25"
+                         aria-valuemin="0"
+                         aria-valuemax="100"> {{ areas|count }}
+                    </div>
+
+                    <div>{{ user.countries_visited() }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    Вы были в:
+
+
+    {% for trail in user.trails %}
+
+        {% for photo in trail.photos %}
+
+            <li><a href="{{ photo.country }}">{{ photo.country }}</a></li>
+
+        {% endfor %}
+    {% endfor %}
+
+
+    {% for country, areas in countries_visited.items() %}
+
+        <ul>
+            <li><a href="{{ country }}">{{ country }}</a></li>
+        </ul>
+
+    {% endfor %}
+
+
+    <div class="container">
+        <ul class="list-group col-6">
+                {% for country, areas in countries_visited.items() %}
+
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a href="{{ country }}">{{ country }}</a>
+                <span class="badge badge-primary badge-pill"> {{ areas|count }} из {{  }}</span>
+
+                </li>
+
+
+                                      {% for area in areas %}
+                                          <li class="list-group-item d-flex justify-content-between align-items-center">
+                         <a href="{{ area }}">{{ area }}</a>
+                                          </li>
+                {% endfor %}
+
+
+
+    {% endfor %}
+
+        </ul>
+    </div>
+
+{#    #}
+{#    {% for country in countries %}#}
+{#        <li><a href="{{ country }}">{{ country }}</a></li>#}
+{#    {% endfor %}#}
+{##}
+{#    {% for area in areas %}#}
+{#        <li><a href="{{ area }}">{{ area }}</a></li>#}
+{#    {% endfor %}#}
+{##}
+{#    <hr>#}
+{#    {% for trail in trails %}#}
+{#        <p>#}
+{#        {% if trail.area %}<b>{{ trail.area }}</b><br>{% endif %}#}
+{#        <i>{{ trail.comment }}</i><br>#}
+
+
+
+{#        {% include '_trail.html' %}#}
+{##}
+{##}
+{#    {% endfor %}#}
+
+</div>
+{% endblock %}

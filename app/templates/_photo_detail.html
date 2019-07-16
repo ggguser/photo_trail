@@ -16,10 +16,37 @@
 {#    </div>#}
 
 
-<div class="card" style="width: 10rem;">
-  <img src="{{ url_for('static', filename='photos/' + photo.thumbnail) }}" class="card-img-top" alt="...">
-  <div class="card-body">
-    <p class="card-text">{{ photo.datetime, photo.lat, photo.lng, photo.area }}</p>
-                  <div><small class="text-muted">{{ photo.original_filename }}</small></div>
-  </div>
+{#<div class="card" style="width: 10rem;">#}
+{#  <img src="{{ url_for('static', filename='photos/' + photo.thumbnail) }}" class="card-img-top" alt="...">#}
+{#  <div class="card-body">#}
+{#    <p class="card-text">{{ photo.datetime, photo.lat, photo.lng, photo.area }}</p>#}
+{#                  <div><small class="text-muted">{{ photo.original_filename }}</small></div>#}
+{#  </div>#}
+{#</div>#}
+
+
+
+
+<div class="col-md-3">
+    <div class="card mb-2 shadow-sm align-items-center">
+
+ <img src="{{ url_for('static', filename='photos/' + photo.thumbnail()) }}"
+                class="img-thumbnail"  alt="..."
+                width="200">
+        <div class="card-body">
+            {# Перед тем как отображать проверка, что нет ошибок, есть дата и регион #}
+            {% if not photo.error and photo.datetime and photo.area %}
+                <p class="card-text">{{ photo.country.name }}, {{ photo.area.name }}</p>
+            {% endif %}
+
+            {% if photo.error == 'unsupported_country' %}
+                <p class="btn-warning">Это не Россия, а {{ photo.country }}!</p>
+            {% elif photo.error == 'no_coordinates' %}
+                <p class="btn-warning">Это фото без координат!</p>
+            {% endif %}
+
+
+
+        </div>
+    </div>
 </div>

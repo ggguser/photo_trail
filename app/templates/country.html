@@ -4,7 +4,7 @@
 
 
     <div class="container col-6">
-        <table class="table table-bordered table-sm table-striped">
+        <table class="table table-bordered table-sm table-striped shadow-lg">
             <thead>
             <tr>
                 <th scope="col">
@@ -13,7 +13,7 @@
                         <img class="mr-3 shadow p-0 "
                              src="{{ url_for('static', filename='flags/' + country.iso + '.png') }}"
                              alt="Flag of{{ country.name }}"
-                            width="100">
+                             width="100">
                         <div class="media-body">
                             <h5 class="mt-0">{{ country.name }}</h5>
                             {{ country.areas_count }}
@@ -28,7 +28,15 @@
             <tbody>
             {% for area in country.areas %}
                 <tr>
-                    <td><a href="{{ url_for('area', country_iso=area.country.iso, area_iso=area.iso) }}">{{ area.name }}</a></td>
+                    <td class="d-flex justify-content-between align-items-center">
+                        <a href="{{ url_for('area', country_iso=area.country.iso, area_iso=area.iso) }}">{{ area.name }}</a>
+                        {% if area.photos_count() %}
+                        <span class="badge badge-info badge-pill">{{ area.photos_count() }}</span>
+                        {% else %}
+                        <span class="badge badge-secondary badge-pill">{{ area.photos_count() }}</span>
+                        {% endif %}
+
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

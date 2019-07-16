@@ -1,10 +1,22 @@
 {% extends "base.html" %}
-Привет!
+
 {% block content %}
-    {% for trail in trails %}
-        {% for photo in trail.photos %}
-            <img src="{{ url_for('static', filename='photos/' + photo.thumbnail) }}" width="200">
-        {% endfor %}
+{#        {{ areas }}#}
+    {% for trail in trails if not trail.private %}
+  <div class="album py-5 bg-light">
+
+    <div class="container">
+        <div class=""><h3>{{ trail.author.username }}: {{ trail.comment }}</h3></div>
+        <div class="row">
+          {% for photo in trail.photos if not photo.deleted %}
+
+                        {% include '_photo_detail.html' %}
+
+                {% endfor %}
+
+        </div>
+    </div>
+</div>
     {% endfor %}
 
 {% endblock %}

@@ -18,11 +18,11 @@ def get_most_frequent(items: list):
     0
     """
     try:
-        #  Composing a dictionary with 'elements': frequency pairs
+        #  Composing a dictionary with 'items': frequency pairs
         frequency = Counter(items)
         #  From dictionary composing a list of tuples sorted by frequency
         sorted_frequency = frequency.most_common()
-        #  List of tuples getting the first element of the first tuple
+        #  Getting the first element of the first tuple
         return sorted_frequency[0][0]
     except IndexError:
         return None

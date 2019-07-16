@@ -1,39 +1,58 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <body class="text-center">
-    <h1>Register</h1>
+    <div class="container">
+    <div class="row">
+    <div class="jumbotron col-6 offset-3 shadow">
+
+
     <form action="" method="post">
+    <h1 class="text-info">Регистрация</h1>
         {{ form.hidden_tag() }}
-        <p>
-            {{ form.username.label }}<br>
-            {{ form.username(size=32) }}<br>
-            {% for error in form.username.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.email.label }}<br>
-            {{ form.email(size=32) }}<br>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label">{{ form.username.label }}</label>
+            <div class="col-sm-7">
+                {{ form.username(class="form-control") }}
+                {% for error in form.username.errors %}
+                    <small class="form-text text-danger">{{ error }}</small>
+                {% endfor %}
+            </div>
+
+    </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label">{{ form.email.label }}</label>
+        <div class="col-sm-7">
+            {{ form.email(class="form-control") }}
             {% for error in form.email.errors %}
-            <span style="color: red;">{{ error }}</span>
+            <small class="form-text text-danger">{{ error }}</small>
             {% endfor %}
-        </p>
-        <p>
-            {{ form.password.label }}<br>
-            {{ form.password(size=32) }}<br>
+        </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label">{{ form.password.label }}</label>
+        <div class="col-sm-7">
+            {{ form.password(class="form-control") }}
             {% for error in form.password.errors %}
-            <span style="color: red;">{{ error }}</span>
+            <small class="form-text text-danger">{{ error }}</small>
             {% endfor %}
-        </p>
-        <p>
-            {{ form.password2.label }}<br>
-            {{ form.password2(size=32) }}<br>
+        </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label">{{ form.password2.label }}</label>
+        <div class="col-sm-7">
+            {{ form.password2(class="form-control") }}
             {% for error in form.password2.errors %}
-            <span style="color: red;">{{ error }}</span>
+            <small class="form-text text-danger">{{ error }}</small>
             {% endfor %}
-        </p>
-        <p>{{ form.submit() }}</p>
+        </div>
+        </div>
+        {{ form.submit(class="btn btn-primary") }}
+
+
     </form>
-    </body>
+    </div>
+    </div>
+    </div>
 {% endblock %}

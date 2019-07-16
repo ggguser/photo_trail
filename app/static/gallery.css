@@ -63,7 +63,6 @@ footer p {
 
 .img-thumbnail {
     width: auto;
-
 }
 
 .navbar-custom {
@@ -87,3 +86,23 @@ footer p {
 }
 
 
+.btn-round {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.btn-round.btn-lg {
+    width: 48px;
+    height: 48px;
+}
+
+.btn-round.btn-sm {
+    width: 34px;
+    height: 34px;
+}
+
+.btn-round.btn-xs {
+    width: 24px;
+    height: 24px;
+}

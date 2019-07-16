@@ -486,8 +486,8 @@ mark,
 .img-thumbnail {
   padding: 0.25rem;
   background-color: #fff;
-  border: 1px solid #dee2e6;
-  border-radius: 0.25rem;
+  /*border: 1px solid #dee2e6;*/
+  /*border-radius: 0.25rem;*/
   max-width: 100%;
   height: auto;
 }
@@ -2991,8 +2991,8 @@ input[type="button"].btn-block {
   z-index: 1000;
   display: none;
   float: left;
-  min-width: 10rem;
-  padding: 0.5rem 0;
+  min-width: 4rem;
+  padding: 0.125rem 0;
   margin: 0.125rem 0 0;
   font-size: 1rem;
   color: #212529;
@@ -3970,6 +3970,7 @@ input[type="button"].btn-block {
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 0.5rem 1rem;
+
 }
 
 .navbar > .container,
@@ -3992,6 +3993,7 @@ input[type="button"].btn-block {
   font-size: 1.25rem;
   line-height: inherit;
   white-space: nowrap;
+
 }
 
 .navbar-brand:hover, .navbar-brand:focus {

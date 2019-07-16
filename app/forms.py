@@ -16,8 +16,9 @@ class LoginForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     username = StringField('Логин', validators=[DataRequired()])
     email = StringField('Почта', validators=[DataRequired(), Email()])
-    password = PasswordField('Пароль', validators=[DataRequired()])
-    password2 = PasswordField('Ещё раз пароль', validators=[DataRequired(), EqualTo('password')])
+    password = PasswordField('Пароль', validators=[DataRequired(message='Пароль забыли!')])
+    password2 = PasswordField('Ещё раз пароль', validators=[DataRequired(),
+                                                            EqualTo('password', message='Пароли-то не совпадают!')])
     submit = SubmitField('Зарегистрироваться')
 
     def validate_username(self, username):
@@ -40,7 +41,7 @@ class PhotoEditForm(FlaskForm):
 
 class PhotoUploadForm(FlaskForm):
     photo = FileField(validators=[FileRequired(message='Забыли фото приложить!'),
-                                  FileAllowed(['jpg', 'jpeg'], 'Подойдут только jpeg файлы')])
+                                  FileAllowed(['jpg', 'jpeg'], 'Подойдут только jpeg файлы')], label='Фото')
     upload = SubmitField('Загрузить')
 
 
